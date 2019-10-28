@@ -25,7 +25,19 @@ const routes = [
   {
     path: '/dashboard',
     name: 'dashboard',
-    component: Dashboard
+    component: Dashboard,
+    beforeEnter: (to, from, next) => {
+      const id = localStorage.getItem('userID');
+
+      if(id != null){
+          next();
+      }
+      else{
+        next('/login');
+      }
+
+      
+    }
   }
 ]
 
