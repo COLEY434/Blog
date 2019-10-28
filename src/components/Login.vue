@@ -28,6 +28,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 export default {
     data(){
         return {
@@ -61,6 +62,26 @@ export default {
             }
 
             console.log(this.user);
+            if(this.user.email !== '' && this.user.password !== ''){
+
+                axios.post('https://localhost:44318/api/user/login', this.user)
+                .then((response) => {
+                    console.log(response);
+                    const userId = response.data.userId;
+                    const success = response.data.success;
+                    if(success){
+                        localStorage.setItem('userID', userId);
+                        this.$router.push('/dashboard');
+                    }
+                    else{
+                        this.loginError = true;
+                    }
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+            }
+            
         }
     }
 }
