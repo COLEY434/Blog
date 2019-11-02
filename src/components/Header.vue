@@ -12,7 +12,7 @@
 
           <router-link :to="{name: 'register'}" class="nav-item" tag="li"><a class="nav-link">Sign up</a></router-link> 
           
-          <router-link :to="{name: 'dashboard'}" class="nav-item" tag="li"><a class="nav-link">Dashboard</a></router-link> 
+          <router-link :to="{name: 'posts'}" class="nav-item" tag="li"><a class="nav-link">Posts</a></router-link> 
 
           <li class="nav-item">
             <span class="nav-link">Welome Username</span>
