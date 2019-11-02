@@ -23,21 +23,21 @@ const routes = [
     component: Login
   },
   {
-    path: '/dashboard',
-    name: 'dashboard',
+    path: '/posts',
+    name: 'posts',
     component: Dashboard,
-    beforeEnter: (to, from, next) => {
-      const id = localStorage.getItem('userID');
+    // beforeEnter: (to, from, next) => {
+    //   const id = localStorage.getItem('userID');
 
-      if(id != null){
-          next();
-      }
-      else{
-        next('/login');
-      }
+    //   if(id != null){
+    //       next();
+    //   }
+    //   else{
+    //     next('/login');
+    //   }
 
       
-    }
+    // }
   }
 ]
 
