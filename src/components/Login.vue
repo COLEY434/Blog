@@ -71,7 +71,7 @@ export default {
                     const success = response.data.success;
                     if(success){
                         localStorage.setItem('userID', userId);
-                        this.$router.push('/dashboard');
+                        this.$router.push('/posts');
                     }
                     else{
                         this.loginError = true;
