@@ -74,7 +74,7 @@ export default {
             }
 
             if(this.user.password.length < 6){
-                alert("");
+               
                 this.passwordError = "password too weak"
                 this.passwordhasError = true;
             }
