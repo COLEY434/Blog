@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Login from '../components/Login.vue'
 import Register from '../components/Register.vue'
 import Dashboard from '../components/Dashboard.vue'
+import Post from '../components/Posts'
 
 Vue.use(VueRouter)
 
@@ -23,9 +24,14 @@ const routes = [
     component: Login
   },
   {
+    path: '/dashboard',
+    name: 'dashboard',
+    component: Dashboard
+  },
+  {
     path: '/posts',
     name: 'posts',
-    component: Dashboard,
+    component: Post,
     // beforeEnter: (to, from, next) => {
     //   const id = localStorage.getItem('userID');
 
