@@ -1,4 +1,6 @@
-<template><div>
+<template>
+  
+    
   <div class="container">
       <div class="row" style="margin-top: 5px">
           <div class="col-md-6 offset-md-2">
@@ -14,7 +16,7 @@
 
       <div class="row" style="margin-top: 100px;">
           <div class="col-md-7 offset-md-2">
-              <div v-for="(post, index) in posts" :key="index" class="posts row">
+              <!-- <div v-for="(post, index) in posts" :key="index" class="posts row">
                       <div class="userimg-box">
                         <img src="../assets/images/download.png" id="poster-icon" alt="">
                       </div>
@@ -36,19 +38,23 @@
                       </div>
                       <div class="pl-2">
                           <span class="bkc">View Replies</span>
-                          <!-- Button trigger modal -->
+                          
                           <span class="bkc pl-4"><a data-toggle="modal" @click="getPostId(post.id, post.username)" data-target="#replybox">Reply</a></span>
                       </div>
                     </div>
 
-                  </div>    
-              </div>
-      </div>
-  </div><br><br>
+                  </div> 
+                 
+              </div>--> 
+               <router-view></router-view>  
+          </div>
+      </div> 
+  </div>
   
 
+</template>
 <!-- Modal for replying comments-->
-<div class="modal fade" id="replybox" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<!-- <div class="modal fade" id="replybox" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -68,9 +74,21 @@
       </div>
     </div>
   </div>
-</div>
-  </div>
-</template>
+
+
+
+
+
+
+
+
+
+
+
+</div>  -->
+
+  
+
 
 <script>
 export default {
