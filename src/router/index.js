@@ -3,7 +3,8 @@ import VueRouter from 'vue-router'
 import Login from '../components/Login.vue'
 import Register from '../components/Register.vue'
 import Dashboard from '../components/Dashboard.vue'
-import Post from '../components/Posts'
+import Posts from '../components/Posts'
+import Post from '../components/Post'
 
 Vue.use(VueRouter)
 
@@ -30,8 +31,20 @@ const routes = [
   },
   {
     path: '/posts',
-    name: 'posts',
-    component: Post,
+    //name: 'posts',
+    component: Posts,
+    children: [
+      {
+        path: '',
+        component: Post
+      },
+      {
+        path: ':username/post',
+        name: 'postuser',
+        component: Post 
+      }
+      
+    ]
     // beforeEnter: (to, from, next) => {
     //   const id = localStorage.getItem('userID');
 
