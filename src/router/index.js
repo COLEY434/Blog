@@ -5,6 +5,7 @@ import Register from '../components/Register.vue'
 import Dashboard from '../components/Dashboard.vue'
 import Posts from '../components/Posts'
 import Post from '../components/Post'
+import PostReplies from '../components/PostReplies'
 
 Vue.use(VueRouter)
 
@@ -40,8 +41,7 @@ const routes = [
       },
       {
         path: ':username/post',
-        name: 'postuser',
-        component: Post 
+        component: PostReplies
       }
       
     ]
