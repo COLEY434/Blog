@@ -22,6 +22,8 @@
             <div class="pl-2">
                 <span class="bkc" @click="loadPostReplies(post.id, post.username)">View Replies</span>
                 <span class="bkc pl-4"><a data-toggle="modal" @click="getPostId(post.id, post.username)" data-target="#replybox">Reply</a></span>
+                <span class="bkc pl-4"><a data-toggle="modal" @click="getPostId(post.id, post.username)" data-target="#EditCommentBox">Edit</a></span>
+            
             </div>
 
         </div>              
@@ -47,6 +49,32 @@
                       
                   </textarea>
                   <button type="submit" class="btn btn-primary" id="postButton">Post</button>
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+         </form>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+
+<!-- Modal for editing posts-->
+<div class="modal fade" id="EditCommentBox" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalCenterTitle">Editing post</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+         <form @submit.prevent="EditPost()">
+                  <textarea v-model="replyMessage" style="width: 100%" id="message" cols="73" rows="5">
+                      
+                  </textarea>
+                  <button type="submit" class="btn btn-primary" id="postButton">Edit</button>
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
          </form>
       </div>
@@ -133,7 +161,7 @@ export default {
 
 
 
-<style scoped>
+<style>
     #message {
         border-radius: 5px;
         padding: 3px 5px;
