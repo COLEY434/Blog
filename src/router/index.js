@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Login from '../components/Login.vue'
 import Register from '../components/Register.vue'
-import Dashboard from '../components/Dashboard.vue'
+import Dashboard from '../components/Dashboard/Dashboard.vue'
 import Posts from '../components/Posts'
 import Post from '../components/Post'
 import PostReplies from '../components/PostReplies'
@@ -57,6 +57,10 @@ const routes = [
 
       
     // }
+  },
+  {
+    path: '/dashboard',
+    component: Dashboard
   }
 ]
 
