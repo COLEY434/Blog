@@ -14,6 +14,8 @@
           
           <router-link to="/posts" class="nav-item" tag="li"><a class="nav-link">Posts</a></router-link> 
 
+          <router-link to="/dashboard" class="nav-item" tag="li"><a class="nav-link">Dashboard</a></router-link> 
+
           <li class="nav-item">
             <span class="nav-link">Welome Username</span>
           </li>
