@@ -8,7 +8,7 @@
                   <textarea v-model="message" style="width: 100%" id="message" cols="73" rows="5" placeholder="Hey, What's on your mind?">
                       
                   </textarea>
-                  <button type="submit" class="btn btn-primary" id="postButton">Post</button>
+                  <button type="submit" :disabled="!message" class="btn btn-primary" id="postButton">Post</button>
               </form>
           </div>
       </div>
