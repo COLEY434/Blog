@@ -1,6 +1,6 @@
 <template>
   <div class="row" style="margin-right: 0px">
-    <div class="col-md-2" style="height: 92.9vh; padding: 0px">
+    <div class="col-md-2" style="height: 92.9vh; padding: 0px;">
       <dashboard-side-bar></dashboard-side-bar>
     </div>
     <div class="col-md-10">
