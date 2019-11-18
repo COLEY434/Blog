@@ -6,6 +6,10 @@ import Dashboard from '../components/Dashboard/Dashboard.vue'
 import Posts from '../components/Posts'
 import Post from '../components/Post'
 import PostReplies from '../components/PostReplies'
+import ChangePassword from '../components/Dashboard/Password'
+import Profile from '../components/Dashboard/Profile'
+import EditProfile from '../components/Dashboard/EditProfile'
+
 
 Vue.use(VueRouter)
 
@@ -60,7 +64,24 @@ const routes = [
   },
   {
     path: '/dashboard',
-    component: Dashboard
+    component: Dashboard,
+    children: [
+      {
+        path: 'change-password',
+        component: ChangePassword
+    
+      },
+      {
+        path: 'profile',
+        component: Profile
+    
+      },
+      {
+        path: 'Edit-Profile',
+        component: EditProfile
+    
+      }
+    ]
   }
 ]
 
