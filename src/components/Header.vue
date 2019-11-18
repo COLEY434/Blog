@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid" style="padding: 0px">
+  <div class="container-fluid" style="padding: 0px;">
     <nav class="navbar navbar-expand-lg">
       <a class="navbar-brand" href="#">Safari Blog</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -36,6 +36,7 @@ export default {
   nav{
     background-color: rgb(45, 92, 86);
     color: rgb(255, 255, 255);
+    
   }
 
   nav a{
