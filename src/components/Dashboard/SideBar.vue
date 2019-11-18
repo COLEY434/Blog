@@ -2,12 +2,12 @@
   <div>
      <div class="side-bar">
          <ul id="side-bar-content-container" style="">
-            <li><i class="fas fa-home"></i>&nbsp; Dashboard</li>
-            <li><i class="fas fa-key"></i>&nbsp;Change Password</li>
-            <li><i class="fas fa-id-card"></i>&nbsp;Profile</li>
+            <router-link to="/dashboard" tag="li"><a><i class="fas fa-home"></i>&nbsp;Dashboard</a></router-link>
+            <router-link to="/dashboard/change-password" tag="li"><a><i class="fas fa-key"></i>&nbsp;Change Password</a></router-link>
+            <router-link to="/dashboard/profile" tag="li"><a><i class="fas fa-id-card"></i>&nbsp;Profile</a></router-link>
             <li @click="show"><i class="fas fa-cogs"></i>&nbsp;Settings
                 <ul id="df" style="display: none">
-                    <li><i class="fas fa-edit"></i>&nbsp;Edit Profile</li>
+                    <router-link to="/dashboard/Edit-profile" tag="li"><a><i class="fas fa-edit"></i>&nbsp;Edit Profile</a></router-link>
                     <li><i class="fas fa-sign-out-alt"></i>&nbsp;LogOut</li>
                 </ul>
             </li>        
@@ -56,10 +56,17 @@ export default {
 #side-bar-content-container li {
     list-style-type: none;
     margin-top: 20px;
-    color: white;
     padding: 10px 0px 10px 50px;
-    cursor: pointer;
+    color: white;
+    cursor:pointer;
 
+}
+
+#side-bar-content-container li a {
+    color: white;
+}
+#side-bar-content-container li a:hover {
+    text-decoration: none;
 }
 
 #side-bar-content-container li:hover {
