@@ -11,7 +11,7 @@
                     <input type="email" v-model="user.email" class="form-control" id="Email" aria-describedby="emailHelp" placeholder="Enter email">
                     <small id="emailHelp" v-if="emailHasError" class="form-text text-danger">{{emailError}}</small>
                 </div>
-
+ 
                 <div class="form-group">
                     <label for="Password">Password</label>
                     <input type="password" v-model="user.password" class="form-control" id="InputPassword" placeholder="Password">
@@ -66,11 +66,10 @@ export default {
 
                 axios.post('https://localhost:44318/api/user/login', this.user)
                 .then((response) => {
-                    console.log(response);
                     const userId = response.data.userId;
                     const success = response.data.success;
                     if(success){
-                        localStorage.setItem('userID', userId);
+                        localStorage.setItem('userId', userId);
                         this.$router.push('/posts');
                     }
                     else{
