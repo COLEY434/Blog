@@ -3,6 +3,7 @@
       <div class="row">
           <div class="col-md-4 offset-md-4">
               <div id="da">
+                  <small id="emailHelp" v-if="failure" class="form-text text-danger">{{ failureMessage }}.</small>
               <form @submit.prevent="Register">
                   <br>
                 <div class="form-group">
@@ -37,83 +38,93 @@
 <script>
 import axios from 'axios';
 export default {
-    
-    data(){
-        return {
-            user: {
-                email: '',
-                password: null,
-                confirmPassword: null
-            },
-            emailError: null,
-            passwordError: null,
-            confirmPasswordError: null,
-            emailhasError: false,
-            passwordhasError: false,
-            confirmPasswordhasError: false
-
-        }
-    },
-    methods: {
-        Register(){
-            
-            if(this.user.email === '' || null){
-                this.emailError = "Invalid email address"
-                this.emailhasError = true;
-            }
-            else{
-                this.emailhasError = false;
-            }
-
-            if(this.user.password === null || ''){
-                this.passwordError = "please type a pasword"
-                this.passwordhasError = true;
-            }
-            else{
-                this.passwordhasError = false;
-            }
-
-            if(this.user.password.length < 6){
-               
-                this.passwordError = "password too weak"
-                this.passwordhasError = true;
-            }
-            else{
-                this.passwordhasError = false;
-            }
-
-
-
-            if(this.user.password !== this.user.confirmPassword){
-                this.confirmPasswordError = "Password does not match"
-                this.confirmPasswordhasError = true;
-            }
-            else{
-                this.confirmPasswordhasError = false;
-            }
-
-            
-
-            const userDetails = {
-                surname: 'Okafor',
-                firstname: 'frank',
-                gender: 'male',
-                 state: 'Lagos state',
-                age: 44,   
-                email: this.user.email,
-                password: this.user.password
-            }
-            console.log(userDetails);
-            axios.post('https://localhost:44318/api/user/create', userDetails)
-                .then((response) => {
-                    console.log(response);
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
+data(){
+    return {
+        user: {
+            email: '',
+            password: '',
+            confirmPassword: ''
         },
-        
+
+        failure: false,
+        failureMessage: '',
+        emailError: '',
+        passwordError: '',
+        confirmPasswordError: '',
+        emailhasError: false,
+        passwordhasError: false,
+        confirmPasswordhasError: false
     }
+},   
+methods: {
+    Register(){
+        if(this.user.email === '' || null){
+            this.emailError = "Invalid email address"
+            this.emailhasError = true;
+            return;
+        }
+        else{
+            this.emailhasError = false;
+        }
+        
+        if(this.user.password === ''){
+            this.passwordError = "please type a password"
+            this.passwordhasError = true;
+                return;
+        }
+        else{
+            this.passwordhasError = false;
+        }
+        
+        // if(this.user.password.length < 6){
+            
+        //     this.passwordError = "password too weak"
+        //     this.passwordhasError = true;
+        // }
+        // else{
+        //     this.passwordhasError = false;
+        // }
+        if(this.user.password !== this.user.confirmPassword){
+            this.confirmPasswordError = "Password does not match"
+            this.confirmPasswordhasError = true;
+                return;
+        }
+        else{
+            this.confirmPasswordhasError = false;
+        }
+        
+        const userDetails = {  
+            email: this.user.email, 
+            password: this.user.password
+        }
+        
+
+if(this.user.email !== '' || this.user.password !== ''){
+
+    axios.post('https://localhost:44318/api/user/create', userDetails)
+    .then((response) => {
+           
+        const successMessage = response.data;
+        if(successMessage.success)
+        {
+           localStorage.setItem('userId', successMessage.userId);
+           this.$router.push('/posts');
+        }
+        if(!successMessage.success)
+        {
+            this.failure = true;
+            this.failureMessage = successMessage.message;
+        }
+    })
+    .catch((error) => {
+        console.log(error);
+    });
+}
+
+
+    },
+    
+}
 }
 </script>
 
