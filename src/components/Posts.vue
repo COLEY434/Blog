@@ -16,7 +16,7 @@
 
       <div class="row" style="margin-top: 100px;">
           <div class="col-md-7 offset-md-2">
-               <router-view></router-view>  
+               <router-view :posts="posts"></router-view>  
           </div>
       </div> 
   </div>
@@ -25,46 +25,57 @@
 </template>
 
 
-  
-
-
 <script>
+import axios from 'axios'
 export default {
-
-    data(){
-        return {      
-            message: '',     
-        }
-    },
-    methods: {
-        Post(){
-            const dateobj = new Date();
-            const date = dateobj.getDate();
-            const month = dateobj.getMonth() + 1;
-            const year = dateobj.getFullYear();
-           const userData = {
-                id: 4,
-                date: date + '-' + month + '-' + year,
-                message: this.message,
-                updated: date + '-' + month + '-' + year,
-                isLiked: false
-            }
-            this.posts.unshift(userData);
-            this.message = null;
-            
-        }
-
+data(){
+    return {      
+        message: '', 
+        posts: this.$store.state.posts 
     }
+},
+computed: {
+    getPost(){
+        return this.$store.getters.getPosts;
+    }
+},
+
+watch: {
+    getPost(newPost){
+        this.posts = newPost;
+    }
+},
+methods: {
+    fetchData(){
+        axios.get('https://localhost:44318/api/post/get-posts')
+            .then((response) => {  
+                const data = response.data; 
+                //console.log(data);
+                const result = [];  
+                for(let post in data){ 
+                    result.unshift(data[post]); 
+                }
+                console.log("asa" + result);
+                this.posts = result;
+        })
+        .catch((error) => {
+        console.log(error);
+        });
+    },
+    Post(){
+       const userData = { user_Id: Number(this.$store.state.userId), message: this.message }
+        this.$store.dispatch('sendPost', userData);
+        this.message = null;
+        
+    }
+
+}
 }
 </script>
 
 <style scoped>
-    
-    #postButton {
+ #postButton {
         float: right;
-        padding: 5px 30px;
-       
-    }
-    
-   
+        padding: 5px 30px;     
+    }  
 </style>

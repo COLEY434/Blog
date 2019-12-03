@@ -2,16 +2,17 @@
   <div>
     <div v-for="(post, index) in posts" :key="index" class="posts row">
         <div class="userimg-box">
-            <img src="../assets/images/download.png" id="poster-icon" alt="">
+            <img v-if="post.img_url == null" src="../assets/images/download.png" id="poster-icon" alt="">
+            <!-- <img v-if="post.img_url" src="post.img_url" id="poster-icon" alt=""> -->
         </div>
-
          <div class="usercomment-box">
             <div class="mt-2">
-                <span class="ng pl-2">Posted: {{ post.date }}</span>
-                <span class="reply-view-likes" style="float: right; margin-right: 15px;" v-if="!post.isLiked"><i style="cursor: pointer" @click="change(post.id)" class="far fa-heart"></i></span>
-                <span class="reply-view-likes" style="float: right; margin-right: 15px;" v-else><i style="cursor: pointer" @click="change(post.id)" class="text-danger fas fa-heart"></i></span>
-                <p class="pl-2">{{ post.username }}</p>
-                <p class="pl-2 mt-n2">Updated: {{ post.updated }}</p>
+                <span class="ng pl-2">Posted: {{ post.date_posted }}</span>
+                <span class="reply-view-likes" style="float: right; margin-right: 15px;" v-if="!post.isLiked"><i style="cursor: pointer" @click="change(post.Id)" class="far fa-heart"></i></span>
+                <span class="reply-view-likes" style="float: right; margin-right: 15px;" v-else><i style="cursor: pointer" @click="change(post.Id)" class="text-danger fas fa-heart"></i></span>
+                <p class="pl-2" v-if="post.username">{{ post.username }}</p>
+                <p class="pl-2" v-if="!post.username">Anonymous</p>
+                <p class="pl-2 mt-n2" v-if="post.date_updated">Updated: {{ post.date_updated }}</p>
             </div>
                       
              <div class="pl-2">
@@ -21,8 +22,8 @@
             </div>
             <div class="pl-2">
                 <span class="bkc" @click="loadPostReplies(post.id, post.username)">View Replies</span>
-                <span class="bkc pl-4"><a data-toggle="modal" @click="getPostId(post.id, post.username)" data-target="#replybox">Reply</a></span>
-                <span class="bkc pl-4"><a data-toggle="modal" @click="getPostId(post.id, post.username)" data-target="#EditCommentBox">Edit</a></span>
+                <span class="bkc pl-4"><a data-toggle="modal" @click="setReplyInfo(post.id, post.username)" data-target="#replybox">Reply</a></span>
+                <span class="bkc pl-4"><a data-toggle="modal" v-if="Number(post.userId) === Number($store.state.userId)" @click="setEditInfo(post.id, post.message)" data-target="#EditCommentBox">Edit</a></span>
             
             </div>
 
@@ -38,18 +39,20 @@
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalCenterTitle">Replying to @{{ postUsername }}</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <h5 class="modal-title" v-if="postUsername" id="exampleModalCenterTitle">Replying to @{{ postUsername }}</h5>
+        <h5 class="modal-title" v-if="!postUsername" id="exampleModalCenterTitle">Replying to Annonymous</h5>
+        <button type="button" class="close" data-dismiss="modal" @click="clearSuccessMessage()" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
+          <p class="text-success" v-if="successMessage">{{successMessage}}</p>
          <form @submit.prevent="PostReply">
                   <textarea v-model="replyMessage" style="width: 100%" id="message" cols="73" rows="5">
                       
                   </textarea>
-                  <button type="submit" class="btn btn-primary" id="postButton">Post</button>
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="submit" :disabled="!replyMessage" class="btn btn-primary" id="postButton">Post</button>
+                  <button type="button" class="btn btn-secondary" @click="clearSuccessMessage()" data-dismiss="modal">Close</button>
          </form>
       </div>
     </div>
@@ -65,17 +68,18 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalCenterTitle">Editing post</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" class="close" data-dismiss="modal"  @click="clearSuccessMessage()" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
          <form @submit.prevent="EditPost()">
-                  <textarea v-model="replyMessage" style="width: 100%" id="message" cols="73" rows="5">
-                      
+             <p class="text-success" v-if="successMessage">{{successMessage}}</p>
+                  <textarea v-model="editMessage" style="width: 100%" id="message" cols="73" rows="5">
+                      { editMessage }
                   </textarea>
-                  <button type="submit" class="btn btn-primary" id="postButton">Edit</button>
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="submit" :disabled="!editMessage" class="btn btn-primary" id="postButton">Edit</button>
+                  <button type="button" class="btn btn-secondary" @click="clearSuccessMessage()" data-dismiss="modal">Close</button>
          </form>
       </div>
     </div>
@@ -86,45 +90,18 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
-    data(){
+    data(){ 
         return {
-            replyMessage: '',
+            replyMessage: null,
+            editMessage: '',
             postId: null,
             postUsername: null,
-
-            posts: [
-                {
-                    id: 1,
-                    message: "Amazon Simple Storage Service is storage for the Internet. It is designed to make web-scale computing easier for developers. Amazon S3 has a simple web services interface that you can use to store and retrieve any amount of data, at any time, from anywhere on the web. It gives any developer access to the same highly scalable, reliable, fast, inexpensive data storage infrastructure that Amazon uses to run its own global network of web sites. The service aims to maximize benefits of scale and to pass those benefits on to developers.",
-                    date: "04-11-2019",
-                    updated: "14-11-2019",
-                    username: "SantasCruz",
-                    isLiked: false
-
-                },
-                {
-                    id: 2,
-                    message: "I like unit testin but the issue with is that it can be very difficult to understand atimes. This guide explains the core concepts of Amazon S3, such as buckets and objects, and how to work with these resources using the Amazon S3 application programming interface (API).",
-                    date: "04-11-2019",
-                    updated: "14-11-2019",
-                    username: "Coley02",
-                    isLiked: false
-                    
-                },
-                {
-                    id: 3,
-                    message: "I like unit testin but the issue with is that it can be very difficult to understand atimes. It gives any developer access to the same highly scalable, reliable, fast, inexpensive data storage infrastructure that Amazon uses to run its own global network of web sites. ",
-                    date: "04-11-2019",
-                    updated: "14-11-2019",
-                    username: "disaster89",
-                    isLiked: false
-                    
-                }
-            ]
+            successMessage: null
         }
     },
-
+    props: ['posts'],
     methods: {
          change(e){
            // this.posts.isLiked = !this.post.isLiked;
@@ -134,22 +111,60 @@ export default {
                 
                 selected[0].isLiked = !selected[0].isLiked;
                 
-                console.log(selected);
-     
-             
+                console.log(selected);  
+        },
+        clearSuccessMessage(){
+            this.successMessage = null;
+        },
+        EditPost(){      
+            axios.put("https://localhost:44318/api/post/update", {
+                post_Id: Number(this.postId),
+                message: this.editMessage
+            })
+            .then((response) => {
+                var data = response.data;
+                if(data.success){
+                    this.successMessage = data.message;
+                    this.editMessage = null;
+                    this.$store.dispatch('getAllPost');
+                }
+                
+            })
+            .catch((error) => {
+                console.log(error);
+            })
         },
         PostReply(){
-            console.log(this.replyMessage);
+            axios.post("https://localhost:44318/api/post/reply/create", {
+                post_Id: Number(this.postId),
+                message: this.replyMessage,
+                user_Id: Number(this.$store.state.userId)
+            })
+            .then((response) => {
+                var data = response.data;
+                if(data.success){
+                    this.successMessage = data.message;
+                    this.replyMessage = null;
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            })
         },
-        getPostId(Id, username){
+        setEditInfo(Id, message){
+            this.postId = Id;    
+            this.editMessage = message;  
+        },
+
+        setReplyInfo(Id, username){
             this.postUsername = username;
-            this.postId = Id;
-            console.log(this.postUsername + ' ' + this.postId);
+            this.postId = Id;      
         },
 
         loadPostReplies(PostId, PostUsername){
+            const postUsername = PostUsername == null ? 'Anonymous' : PostUsername;
             console.log(PostId + ' ' + PostUsername);
-            this.$router.push('posts/' + PostUsername + '/post');
+            this.$router.push('posts/' + postUsername + '/post');
         }
     }
 }

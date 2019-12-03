@@ -11,7 +11,12 @@ import Header from "./components/Header";
 export default {
   components: {
     appNav: Header
-  }
+  },
+  created(){
+    this.$store.dispatch('tryAutoLogin');
+    this.$store.dispatch('getAllPost');
+  },
+
 }
 
 </script>

@@ -70,6 +70,7 @@ export default {
                     const success = response.data.success;
                     if(success){
                         localStorage.setItem('userId', userId);
+                        this.$store.dispatch('setId', userId);
                         this.$router.push('/posts');
                     }
                     else{
