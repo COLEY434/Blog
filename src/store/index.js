@@ -10,7 +10,8 @@ export default new Vuex.Store({
     userId: null,
     posts: [],
     dateTime: null,
-    updatedDateTime: null
+    updatedDateTime: null,
+    comments: []
   },
   mutations: {
     setId(state, Id){
@@ -18,11 +19,18 @@ export default new Vuex.Store({
     },
     storePosts(state, payload){
       state.posts = payload
+    },
+    setComments(state, payload){
+      state.comments = payload
     }
   },
   actions: {
     setId({commit}, userID){
       commit('setId', userID);
+    },
+    getComments({commit}, comments){
+      console.log("dfdfd");
+        commit('setComments', comments);
     },
     sendPost(context,userData){
       axios.post('https://localhost:44318/api/post/create', userData)

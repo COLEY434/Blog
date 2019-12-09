@@ -3,15 +3,15 @@
       <button class="btn btn-info" @click="goBack">Go Back</button><br>
       
 
-      <div v-for="(post, index) in posts" :key="index" class="posts row">
+      <div v-for="(post, index) in comments" :key="index" class="posts row">
         <div class="userimg-box">
             <img src="../assets/images/download.png" id="poster-icon" alt="">
         </div>
 
          <div class="usercomment-box">
             <div class="mt-2">
-                <span class="ng pl-2">Posted: {{ post.date }}</span>
-                <p class="pl-2">{{ post.username }}</p>
+                <span class="ng pl-2">Posted: {{ post.date_posted }}</span>
+                <p class="pl-2">{{ post.date_updated }}</p>
             </div>
                       
              <div class="pl-2">
@@ -41,7 +41,7 @@
         </button>
       </div>
       <div class="modal-body">
-        {{ fullPostMessage }}
+        <!-- {{ fullPostMessage }} -->
       </div>
     </div>
   </div>
@@ -54,9 +54,9 @@
 export default {
     data(){
         return {
-             posts: [],
-             fullPost: [],
-             fullPostMessage: null
+             comments: [],
+            //  fullPost: [],
+            //  fullPostMessage: null
         }
     },
     methods: {
@@ -64,54 +64,55 @@ export default {
             this.$router.go(-1);
         },
 
-        seeMore(Id){
-            console.log(this.fullPost);
-            const fullPost = this.fullPost.filter(x => x.id == Id);
+        // seeMore(Id){
+        //     console.log(this.fullPost);
+        //     const fullPost = this.fullPost.filter(x => x.id == Id);
 
-            this.fullPostMessage = fullPost[0].message;
+        //     this.fullPostMessage = fullPost[0].message;
 
-            console.log(Id);
-            console.log(fullPost);
-        }
+        //     console.log(Id);
+        //     console.log(fullPost);
+        // }
     },
 
     created(){
-        console.log("hahahha");
-        const postData = [
-                {
-                    id: 1,
-                    message: "Amazon Simple Storage Service is storage for the Internet. It is designed to make web-scale computing easier for developers. Amazon S3 has a simple web services interface that you can use to store and retrieve any amount of data, at any time, from anywhere on the web. It gives any developer access to the same highly scalable, reliable, fast, inexpensive data storage infrastructure that Amazon uses to run its own global network of web sites. The service aims to maximize benefits of scale and to pass those benefits on to developers.",
-                    date: "04-11-2019",
-                    updated: "14-11-2019",
-                    username: "SantasCruz",
-                    isLiked: false
+        this.comments = this.$store.state.comments;
+        // console.log("hahahha");
+        // const postData = [
+        //         {
+        //             id: 1,
+        //             message: "Amazon Simple Storage Service is storage for the Internet. It is designed to make web-scale computing easier for developers. Amazon S3 has a simple web services interface that you can use to store and retrieve any amount of data, at any time, from anywhere on the web. It gives any developer access to the same highly scalable, reliable, fast, inexpensive data storage infrastructure that Amazon uses to run its own global network of web sites. The service aims to maximize benefits of scale and to pass those benefits on to developers.",
+        //             date: "04-11-2019",
+        //             updated: "14-11-2019",
+        //             username: "SantasCruz",
+        //             isLiked: false
 
-                },
-                {
-                    id: 2,
-                    message: "Amazon Simple Storage Service is storage for the Internet. It is designed to make web-scale computing easier for developers. Amazon S3 has a simple web services interface that you can use to store and retrieve any amount of data, at any time, from anywhere on the web. It gives any developer access to the same highly scalable, reliable, fast, inexpensive data storage infrastructure that Amazon uses to run its own global network of web sites. The service aims to maximize benefits of scale and to pass those benefits on to developers.",
-                    date: "04-11-2019",
-                    updated: "14-11-2019",
-                    username: "coley02",
-                    isLiked: false
+        //         },
+        //         {
+        //             id: 2,
+        //             message: "Amazon Simple Storage Service is storage for the Internet. It is designed to make web-scale computing easier for developers. Amazon S3 has a simple web services interface that you can use to store and retrieve any amount of data, at any time, from anywhere on the web. It gives any developer access to the same highly scalable, reliable, fast, inexpensive data storage infrastructure that Amazon uses to run its own global network of web sites. The service aims to maximize benefits of scale and to pass those benefits on to developers.",
+        //             date: "04-11-2019",
+        //             updated: "14-11-2019",
+        //             username: "coley02",
+        //             isLiked: false
 
-                }
-             ]
-        this.fullPost = postData;
+        //         }
+        //      ]
+        // this.fullPost = postData;
 
-         for(let post of postData){
-                const slicedPostMessage = post.message.slice(0, 100);
+        //  for(let post of postData){
+        //         const slicedPostMessage = post.message.slice(0, 100);
 
-                const userPost = {
-                    id: post.id,
-                    message: slicedPostMessage,
-                    date: post.date,
-                    username: post.username,
-                    isLiked: post.isLiked
-                };
-                this.posts.push(userPost);
-            }
-            console.log(this.fullPost);
+        //         const userPost = {
+        //             id: post.id,
+        //             message: slicedPostMessage,
+        //             date: post.date,
+        //             username: post.username,
+        //             isLiked: post.isLiked
+        //         };
+        //         this.posts.push(userPost);
+            // }
+            // console.log(this.fullPost);
    }
 }
 </script>

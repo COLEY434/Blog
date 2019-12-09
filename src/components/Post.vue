@@ -163,8 +163,16 @@ export default {
 
         loadPostReplies(PostId, PostUsername){
             const postUsername = PostUsername == null ? 'Anonymous' : PostUsername;
-            console.log(PostId + ' ' + PostUsername);
-            this.$router.push('posts/' + postUsername + '/post');
+            axios.get("https://localhost:44318/api/post/get-comments/" + PostId)
+                    .then((response) => {
+                        const data = response.data;
+                        if(data.success){
+                            this.$store.dispatch('getComments', data.comments);
+                            this.$router.push('posts/' + postUsername + '/post');
+                        }
+                        
+                    })
+                        .catch((error) => console.log(error));
         }
     }
 }
