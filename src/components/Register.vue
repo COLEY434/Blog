@@ -57,9 +57,16 @@ data(){
     }
 },   
 methods: {
+
+    getExpirationTime(expiresIn){
+        const expIn = new Date(expiresIn);
+        const currentDate = new Date();
+        const expirationTimeInMiliSeconds = expIn - currentDate;
+        return expirationTimeInMiliSeconds;
+    },
     Register(){
         if(this.user.email === '' || null){
-            this.emailError = "Invalid email address"
+            this.emailError = "Please Provide your email address"
             this.emailhasError = true;
             return;
         }
@@ -101,19 +108,36 @@ methods: {
 
 if(this.user.email !== '' || this.user.password !== ''){
 
-    axios.post('https://localhost:44318/api/user/create', userDetails)
+    axios.post('https://localhost:44318/api/authenticate/register', userDetails)
     .then((response) => {
-           
-        const successMessage = response.data;
-        if(successMessage.success)
+         const result = response.data;
+        if(result.success)
         {
-           localStorage.setItem('userId', successMessage.userId);
+            this.$store.dispatch('authUser', {
+                token: result.token,
+                userId: result.userId,
+                username: result.username
+            })
+            const expirationTime = this.getExpirationTime(result.expiresIn);
+            this.$store.dispatch('setLogoutTimer', expirationTime)
+
+            const now = new Date();
+            const expiresIn = new Date(result.expiresIn);
+            const expirationDate = new Date(now.getTime() + expiresIn.getTime());
+
+            localStorage.setItem('token', result.token);
+            localStorage.setItem('expiresIn', expirationDate);
+            localStorage.setItem('Id', result.userId);
+            localStorage.setItem('username', result.username);
+           
            this.$router.push('/posts');
         }
-        if(!successMessage.success)
+        if(!result.success)
         {
+            this.user = {};
             this.failure = true;
-            this.failureMessage = successMessage.message;
+            this.failureMessage = result.errorMessage;
+            
         }
     })
     .catch((error) => {

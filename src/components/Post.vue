@@ -16,8 +16,8 @@
             </div>
                       
              <div class="pl-2">
-                <p>
-                    {{ post.message }}
+                <p style="color: red; white-space: pre-line">
+                   {{ post.message }}
                 </p>
             </div>
             <div class="pl-2">
@@ -48,10 +48,10 @@
       <div class="modal-body">
           <p class="text-success" v-if="successMessage">{{successMessage}}</p>
          <form @submit.prevent="PostReply">
-                  <textarea v-model="replyMessage" style="width: 100%" id="message" cols="73" rows="5">
+                  <textarea v-model="replyMessage" style="width: 100%" id="message2" cols="73" rows="5">
                       
                   </textarea>
-                  <button type="submit" :disabled="!replyMessage" class="btn btn-primary" id="postButton">Post</button>
+                  <button type="submit" :disabled="!replyMessage" class="btn btn-primary" id="postButton2">Post</button>
                   <button type="button" class="btn btn-secondary" @click="clearSuccessMessage()" data-dismiss="modal">Close</button>
          </form>
       </div>
@@ -75,10 +75,10 @@
       <div class="modal-body">
          <form @submit.prevent="EditPost()">
              <p class="text-success" v-if="successMessage">{{successMessage}}</p>
-                  <textarea v-model="editMessage" style="width: 100%" id="message" cols="73" rows="5">
+                  <textarea v-model="editMessage" style="width: 100%" id="message1" cols="73" rows="5">
                       { editMessage }
                   </textarea>
-                  <button type="submit" :disabled="!editMessage" class="btn btn-primary" id="postButton">Edit</button>
+                  <button type="submit" :disabled="!editMessage" class="btn btn-primary" id="postButton1">Edit</button>
                   <button type="button" class="btn btn-secondary" @click="clearSuccessMessage()" data-dismiss="modal">Close</button>
          </form>
       </div>
@@ -190,6 +190,12 @@ export default {
         padding: 3px 5px;
         margin-top: 10px;
     }
+
+    #message2 {
+        border-radius: 5px;
+        padding: 3px 5px;
+        margin-top: 10px;
+    }
     .posts {
        
         padding: 6px;
@@ -227,7 +233,13 @@ export default {
         margin-right: 15px;
     }
 
-    #postButton {
+    #postButton1 {
+        float: right;
+        padding: 5px 30px;
+       
+    }
+
+     #postButton2 {
         float: right;
         padding: 5px 30px;
        

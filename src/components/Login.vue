@@ -5,7 +5,7 @@
               <div id="da">
               <form @submit.prevent="Login">
                   <br>
-                  <center><span v-if="loginError" class="text-danger">Invalid email or password</span></center>
+                  <center><span v-if="loginError" class="text-danger">{{loginErrorMessage}}</span></center>
                 <div class="form-group">
                     <label for="Email">Email address</label>
                     <input type="email" v-model="user.email" class="form-control" id="Email" aria-describedby="emailHelp" placeholder="Enter email">
@@ -40,10 +40,17 @@ export default {
             emailHasError: false,
             passwordError: null,
             passwordHasError: false,
-            loginError: false
+            loginError: false,
+            loginErrorMessage: false
         }
     },
     methods: {
+         getExpirationTime(expiresIn){
+        const expIn = new Date(expiresIn);
+        const currentDate = new Date();
+        const expirationTimeInMiliSeconds = expIn - currentDate;
+        return expirationTimeInMiliSeconds;
+    },
         Login(){
             if(this.user.email == ''){
                 this.emailError = "please type your email address";
@@ -64,18 +71,38 @@ export default {
             console.log(this.user);
             if(this.user.email !== '' && this.user.password !== ''){
 
-                axios.post('https://localhost:44318/api/user/login', this.user)
+                axios.post('https://localhost:44318/api/authenticate/login', this.user)
                 .then((response) => {
-                    const userId = response.data.userId;
-                    const success = response.data.success;
-                    if(success){
-                        localStorage.setItem('userId', userId);
-                        this.$store.dispatch('setId', userId);
-                        this.$router.push('/posts');
+                     const result = response.data;
+                     console.log(result.expiresIn);
+                    if(result.success)
+                    {
+                        this.$store.dispatch('authUser', {
+                            token: result.token,
+                            userId: result.userId,
+                            username: result.username
+                        })
+                        const expirationTime = this.getExpirationTime(result.expiresIn);
+                        this.$store.dispatch('setLogoutTimer', expirationTime)
+                        const now = new Date();
+                        const expiresInDateTime = new Date(result.expiresIn);
+                        const expiresInMiliseconds = expiresInDateTime - now;
+                        const expirationDate = new Date(now.getTime() + expiresInMiliseconds);
+
+                        localStorage.setItem('token', result.token);
+                        localStorage.setItem('expiresIn', expirationDate);
+                        localStorage.setItem('Id', result.userId);
+                        localStorage.setItem('username', result.username);
+                    
+                    this.$router.push('/posts');
                     }
-                    else{
-                        this.loginError = true;
-                    }
+
+                    if(!result.success)
+                     {
+                        this.user = {};
+                        this.loginError= true;
+                        this.loginErrorMessage = result.errorMessage;          
+                     }
                 })
                 .catch((error) => {
                     console.log(error);
