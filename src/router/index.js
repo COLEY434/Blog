@@ -9,11 +9,16 @@ import PostReplies from '../components/PostReplies'
 import ChangePassword from '../components/Dashboard/Password'
 import Profile from '../components/Dashboard/Profile'
 import EditProfile from '../components/Dashboard/EditProfile'
+import NotFoundComponent from '../components/NotFoundComponent'
+
+
+
 
 
 Vue.use(VueRouter)
 
 const routes = [
+  { path: '*', component: NotFoundComponent },
   {
     path: '/',
     name: 'home',
@@ -30,11 +35,6 @@ const routes = [
     component: Login
   },
   {
-    path: '/dashboard',
-    name: 'dashboard',
-    component: Dashboard
-  },
-  {
     path: '/posts',
     //name: 'posts',
     component: Posts,
@@ -48,19 +48,16 @@ const routes = [
         component: PostReplies
       }
       
-    ]
-    // beforeEnter: (to, from, next) => {
-    //   const id = localStorage.getItem('userID');
-
-    //   if(id != null){
-    //       next();
-    //   }
-    //   else{
-    //     next('/login');
-    //   }
-
-      
-    // }
+    ],
+    beforeEnter: (to, from, next) => {
+      const token = localStorage.getItem("token")
+      if(token){
+          next();
+      }
+      else{
+        next('/login');
+      }
+    }
   },
   {
     path: '/dashboard',
@@ -81,7 +78,18 @@ const routes = [
         component: EditProfile
     
       }
-    ]
+    ],
+    beforeEnter: (to, from, next) => {
+      const token = localStorage.getItem("token")
+      if(token){
+        console.log("rrr")
+          next();      
+      }
+      else{
+        console.log("wherer are")
+        next('/login');
+      }
+    }
   }
 ]
 
