@@ -17,7 +17,7 @@
           <router-link v-if="auth" to="/dashboard" class="nav-item" tag="li"><a class="nav-link">Dashboard</a></router-link> 
 
           <li class="nav-item" v-if="auth">
-            <span v-if="username" class="nav-link">{{username}}</span>
+            <span v-if="username" class="nav-link"> Welcome {{username}}</span>
             <span v-else class="nav-link">Anonymous</span>
           </li>
 
@@ -36,12 +36,11 @@
 export default {
 data(){
   return{
-    username: null
+    username: this.$store.state.username
   }
 },
 watch: {
     getUsername(username){
-      console.log(username);
         this.username = username;
     }
 },
