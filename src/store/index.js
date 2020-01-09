@@ -70,7 +70,6 @@ export default new Vuex.Store({
           });      
     },
     getAllPost({commit, dispatch, state}){ 
-      console.log(state.token);
       
        axios.get('https://localhost:44318/api/post/get-posts')
           .then((response) => {  
@@ -138,13 +137,18 @@ export default new Vuex.Store({
       const token = localStorage.getItem('token');
       const username = localStorage.getItem('username');
       const Now = new Date();
-       console.log(token);
+      const expirationTime = new Date(expirationDate);
+
       if(!token){
-        return
+       return;
       }
 
-      if(Now >= expirationDate){
-        return;
+      if(Now >= expirationTime){
+        localStorage.removeItem('token');
+        localStorage.removeItem('Id');
+        localStorage.removeItem('expiresIn');
+        localStorage.removeItem('username');
+        router.push('/login');
       }
 
       commit('authUser', {
@@ -152,17 +156,20 @@ export default new Vuex.Store({
         userId: user_id,
         username: username
       })
-      router.push('/posts');
-
+      
     }
    
   },
+
   getters: {
     getPosts: state => {
       return state.posts
     },
     isAuthenticated(state){
       return state.token !== null;
+    },
+    getUsername(state){
+      return state.username;
     }
   }
 })
