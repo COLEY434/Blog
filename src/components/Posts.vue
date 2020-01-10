@@ -28,7 +28,10 @@
 <script>
 import axios from 'axios'
 export default {
+ mounted(){
+    axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.state.token;
    
+  },
 data(){
     return {      
         message: '', 

@@ -8,9 +8,7 @@
 
       <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
         <ul class="navbar-nav mr-5">
-          <router-link v-if="!auth" :to="{name: 'login'}" class="nav-item" tag="li"><a class="nav-link">Sign In</a></router-link> 
-
-          <router-link v-if="!auth" :to="{name: 'register'}" class="nav-item" tag="li"><a class="nav-link">Sign up</a></router-link> 
+          
           
           <router-link v-if="auth" to="/posts" class="nav-item" tag="li"><a class="nav-link">Posts</a></router-link> 
 
@@ -18,12 +16,15 @@
 
           <li class="nav-item" v-if="auth">
             <span v-if="username" class="nav-link"> Welcome {{username}}</span>
-            <span v-else class="nav-link">Anonymous</span>
+            <span v-else class="nav-link">Welcome Anonymous</span>
           </li>
 
            <li class="nav-item" v-if="auth">
              <span class="nav-link" style="cursor: pointer" @click="Logout()">Logout</span>
            </li>
+           <router-link v-if="!auth" to="/login" class="nav-item" tag="li"><a class="nav-link">Sign In</a></router-link> 
+
+          <router-link v-if="!auth" to="/register" class="nav-item" tag="li"><a class="nav-link">Sign up</a></router-link> 
 
         </ul>
       </div>

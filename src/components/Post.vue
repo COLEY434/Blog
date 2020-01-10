@@ -168,7 +168,7 @@ export default {
                         const data = response.data;
                         if(data.success){
                             this.$store.dispatch('getComments', data.comments);
-                            this.$router.push('posts/' + postUsername + '/post');
+                            this.$router.push('posts/' + postUsername + '/comments');
                         }
                         
                     })

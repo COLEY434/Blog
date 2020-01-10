@@ -44,8 +44,9 @@ created(){
             console.log(response.data);
             this.UserInfo = response.data;
             this.pic = response.data.img_url;
+            this.$store.dispatch('ProfileData', response.data)
         }) 
-            .catch((error) => console.log(error));
+        .catch((error) => console.log(error));
 },
 
 computed: {

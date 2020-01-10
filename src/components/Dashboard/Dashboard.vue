@@ -14,10 +14,15 @@
 <script>
 import SideBar from './SideBar'
 import DashboardHeader from './DashboardHeader'
+import axios from 'axios'
 export default {
   components: {
     dashboardSideBar: SideBar,
     dashboardHeader: DashboardHeader
+  },
+  mounted(){
+    axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.state.token;
+   
   }
 }
 </script>

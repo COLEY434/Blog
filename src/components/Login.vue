@@ -74,7 +74,6 @@ export default {
                 axios.post('https://localhost:44318/api/authenticate/login', this.user)
                 .then((response) => {
                      const result = response.data;
-                     console.log(result.expiresIn);
                     if(result.success)
                     {
                         this.$store.dispatch('authUser', {

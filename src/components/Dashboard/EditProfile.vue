@@ -2,11 +2,11 @@
   <div class="row">
     <div class="col-md-5 offset-md-3" style="background-color: rgb(45, 92, 86); height: 400px;margin-top: 40px; padding:5px; border-radius: 7px; overflow-y: scroll;">
             <form @submit.prevent="EditProfile">
-                <p v-if="success">{{ successMessage }}</p>
+                <p v-if="success" style="color: red">{{ successMessage }}</p>
                 <p v-else>{{ successMessage }}</p>
                     <div class="form-group">    
                         <label for="surname" id="label-text">Surname</label>
-                        <input type="text" class="form-control" v-model="ProfileData.Surname" id="surname" placeholder="FirstName">
+                        <input type="text" class="form-control" v-model="ProfileData.Surname" id="surname">
                         <!-- <small>password does not match</small> -->
                     </div>
                     <div class="form-group">
@@ -56,6 +56,15 @@ import axios from 'axios';
 export default {
     created(){
         this.userId = this.$store.state.userId
+        this.ProfileData.Surname = this.$store.state.userData.surname
+        this.ProfileData.Firstname = this.$store.state.userData.firstname
+        this.ProfileData.Username = this.$store.state.userData.username
+        this.ProfileData.Email = this.$store.state.userData.email
+        this.ProfileData.Age = this.$store.state.userData.age
+        this.ProfileData.Gender = this.$store.state.userData.gender
+        this.ProfileData.State = this.$store.state.userData.state
+        this.ProfileData.Country = this.$store.state.userData.country
+        
     },
     data(){
         return {
@@ -83,11 +92,16 @@ export default {
                   userProfileData.Age = Number(this.ProfileData.Age);
             axios.put('https://localhost:44318/api/user/edit-profile/' + this.userId, userProfileData)
                 .then((response) => {
-                    console.log(response.data);
+                    if(response.data.success){
+                        this.successMessage = response.data.message;
+                        this.success = true;
+                        this.ClearSuccessMessage();
+                        localStorage.setItem("username", this.ProfileData.Username)
+                        this.$store.dispatch('SetUsername', this.ProfileData.Username);
+                        this.ProfileData = {};
+                    }
                     this.successMessage = response.data.message;
-                    this.success = true;
-                    this.ProfileData = {};
-                    this.ClearSuccessMessage();
+                    
                 })
                 .catch((error) => console.log(error));
         },

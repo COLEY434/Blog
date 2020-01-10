@@ -44,14 +44,14 @@ const routes = [
         component: Post
       },
       {
-        path: ':username/post',
+        path: ':username/comments',
         component: PostReplies
       }
       
     ],
     beforeEnter: (to, from, next) => {
       const token = localStorage.getItem("token")
-      if(token){
+      if(token != null){
           next();
       }
       else{
@@ -81,12 +81,10 @@ const routes = [
     ],
     beforeEnter: (to, from, next) => {
       const token = localStorage.getItem("token")
-      if(token){
-        console.log("rrr")
+      if(token != null){
           next();      
       }
       else{
-        console.log("wherer are")
         next('/login');
       }
     }

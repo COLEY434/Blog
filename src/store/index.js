@@ -14,7 +14,8 @@ export default new Vuex.Store({
     updatedDateTime: null,
     comments: [],
     token: null,
-    username: null
+    username: null,
+    userData: {}
   },
   mutations: {
     authUser(state, userData){
@@ -32,6 +33,12 @@ export default new Vuex.Store({
       state.userId = null,
       state.token = null,
       state.username = null
+    },
+    setProfileData(state, userData){
+      state.userData = userData
+    },
+    setUsername(state, username){
+      state.username = username
     }
   },
   actions: {
@@ -41,6 +48,9 @@ export default new Vuex.Store({
         dispatch('logout')
       }, expirationTime)
     },
+    SetUsername({commit}, username){
+      commit('setUsername', username)
+    },
     authUser({commit}, userInfo){
       commit('authUser', {
         token: userInfo.token,
@@ -48,8 +58,11 @@ export default new Vuex.Store({
         username: userInfo.username
       });
     },
+    ProfileData({commit}, userData){
+      commit('setProfileData', userData)
+    },
     getComments({commit}, comments){
-      console.log("dfdfd");
+      
         commit('setComments', comments);
     },
     sendPost(context,userData){
@@ -87,7 +100,7 @@ export default new Vuex.Store({
 
                   result.unshift(data[post]);
               }
-              console.log(result);
+              
               commit('storePosts', result);
 
           })
@@ -128,7 +141,7 @@ export default new Vuex.Store({
       localStorage.removeItem('Id');
       localStorage.removeItem('expiresIn');
       localStorage.removeItem('username');
-      router.push('/login')
+      router.replace('/login')
 
     },
     tryAutoLogin({commit}){
