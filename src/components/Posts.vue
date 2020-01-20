@@ -50,22 +50,6 @@ watch: {
     }
 },
 methods: {
-    fetchData(){
-        axios.get('https://localhost:44318/api/post/get-posts')
-            .then((response) => {  
-                const data = response.data; 
-                //console.log(data);
-                const result = [];  
-                for(let post in data){ 
-                    result.unshift(data[post]); 
-                }
-                console.log("asa" + result);
-                this.posts = result;
-        })
-        .catch((error) => {
-        console.log(error);
-        });
-    },
     Post(){
        const userData = { user_Id: Number(this.$store.state.userId), message: this.message }
         this.$store.dispatch('sendPost', userData);

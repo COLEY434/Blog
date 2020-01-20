@@ -70,7 +70,7 @@ export default new Vuex.Store({
       // if(!state.token){
       //   return;
       // }
-      axios.post('https://localhost:44318/api/post/create', userData)
+      axios.post('https://blogapi.azurewebsites.net/api/post/create', userData)
           .then((response) => {
             const data = response.data;
             if(data.success){
@@ -83,8 +83,8 @@ export default new Vuex.Store({
           });      
     },
     getAllPost({commit, dispatch, state}){ 
-      
-       axios.get('https://localhost:44318/api/post/get-posts')
+      //https://localhost:44318
+       axios.get('https://blogapi.azurewebsites.net/api/post/get-posts')
           .then((response) => {  
               const data = response.data; 
               const result = [];  

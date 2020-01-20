@@ -117,7 +117,7 @@ export default {
             this.successMessage = null;
         },
         EditPost(){      
-            axios.put("https://localhost:44318/api/post/update", {
+            axios.put("https://blogapi.azurewebsites.net/api/post/update", {
                 post_Id: Number(this.postId),
                 message: this.editMessage
             })
@@ -135,7 +135,7 @@ export default {
             })
         },
         PostReply(){
-            axios.post("https://localhost:44318/api/post/reply/create", {
+            axios.post("https://blogapi.azurewebsites.net/api/post/reply/create", {
                 post_Id: Number(this.postId),
                 message: this.replyMessage,
                 user_Id: Number(this.$store.state.userId)
@@ -163,7 +163,7 @@ export default {
 
         loadPostReplies(PostId, PostUsername){
             const postUsername = PostUsername == null ? 'Anonymous' : PostUsername;
-            axios.get("https://localhost:44318/api/post/get-comments/" + PostId)
+            axios.get("https://blogapi.azurewebsites.net/api/post/get-comments/" + PostId)
                     .then((response) => {
                         const data = response.data;
                         if(data.success){
