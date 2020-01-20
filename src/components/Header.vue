@@ -22,10 +22,12 @@
            <li class="nav-item" v-if="auth">
              <span class="nav-link" style="cursor: pointer" @click="Logout()">Logout</span>
            </li>
-           <router-link v-if="!auth" to="/login" class="nav-item" tag="li"><a class="nav-link">Sign In</a></router-link> 
-
-          <router-link v-if="!auth" to="/register" class="nav-item" tag="li"><a class="nav-link">Sign up</a></router-link> 
-
+           <li class="nav-item">
+           <router-link v-if="!auth" to="/login" class="nav-link">Sign In</router-link> 
+           </li>
+            <li class="nav-item">
+            <router-link v-if="!auth" to="/register" class="nav-link">Sign up</router-link> 
+            </li>
         </ul>
       </div>
 
