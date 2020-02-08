@@ -1,23 +1,19 @@
-<template>
-  
-    
+<template>  
   <div class="container">
       <div class="row" style="margin-top: 5px">
-          <div class="col-md-6 offset-md-2">
+          <div class="col-md-6 offset-md-2 card">
               <form @submit.prevent="Post">
-                  <textarea v-model="message" style="width: 100%" id="message" cols="73" rows="5" placeholder="Hey, What's on your mind?">
+                  <textarea v-model="message" style="width: 100%" id="message" cols="73" rows="0" placeholder="Hey, What's on your mind?">
                       
                   </textarea>
-                  <button type="submit" :disabled="!message" class="btn btn-primary" id="postButton">Post</button>
+                  <button type="submit" :disabled="!message" class="btn btn-primary" id="postButton">POST</button>
               </form>
           </div>
       </div>
 
-
-      <div class="row" style="margin-top: 100px;">
-          <div class="col-md-7 offset-md-2">
-               <router-view :posts="posts"></router-view>  
-          </div>
+ 
+      <div class="row" style="margin-top: 100px;">   
+            <router-view :posts="posts"></router-view>   
       </div> 
   </div>
   
@@ -36,7 +32,7 @@ data(){
     return {      
         message: '', 
         posts: this.$store.state.posts 
-    }
+    } 
 },
 computed: {
     getPost(){

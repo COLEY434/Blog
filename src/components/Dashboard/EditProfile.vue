@@ -90,7 +90,7 @@ export default {
             console.log(this.ProfileData);
             const userProfileData = this.ProfileData;
                   userProfileData.Age = Number(this.ProfileData.Age);
-            axios.put('https://blogapi.azurewebsites.net/api/user/edit-profile/' + this.userId, userProfileData)
+            axios.put('https://localhost:44318/api/user/edit-profile/' + this.userId, userProfileData)
                 .then((response) => {
                     if(response.data.success){
                         this.successMessage = response.data.message;

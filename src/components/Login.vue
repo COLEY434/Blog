@@ -71,7 +71,7 @@ export default {
             console.log(this.user);
             if(this.user.email !== '' && this.user.password !== ''){
 
-                axios.post('https://blogapi.azurewebsites.net/api/authenticate/login', this.user)
+                axios.post('https://localhost:44318/api/authenticate/login', this.user)
                 .then((response) => {
                      const result = response.data;
                     if(result.success)

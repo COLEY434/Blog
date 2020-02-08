@@ -8,19 +8,21 @@
 
       <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
         <ul class="navbar-nav mr-5">
+          <li class="nav-item">
+            <router-link to="/posts" v-if="auth" class="nav-link">Posts</router-link> 
+          </li>
+      
+          <li class="nav-item">
+            <router-link to="/dashboard" v-if="auth" class="nav-link">Dashboard</router-link> 
+          </li>
           
-          
-          <router-link v-if="auth" to="/posts" class="nav-item" tag="li"><a class="nav-link">Posts</a></router-link> 
-
-          <router-link v-if="auth" to="/dashboard" class="nav-item" tag="li"><a class="nav-link">Dashboard</a></router-link> 
-
           <li class="nav-item" v-if="auth">
             <span v-if="username" class="nav-link"> Welcome {{username}}</span>
-            <span v-else class="nav-link">Welcome Anonymous</span>
+            <span v-else class="nav-link">Welcome Anonymous </span>
           </li>
 
-           <li class="nav-item" v-if="auth">
-             <span class="nav-link" style="cursor: pointer" @click="Logout()">Logout</span>
+           <li class="nav-item">
+             <span class="nav-link" v-if="auth" style="cursor: pointer" @click="Logout()">Logout</span>
            </li>
            <li class="nav-item">
            <router-link v-if="!auth" to="/login" class="nav-link">Sign In</router-link> 

@@ -108,7 +108,7 @@ methods: {
 
 if(this.user.email !== '' || this.user.password !== ''){
 
-    axios.post('https://blogapi.azurewebsites.net/api/authenticate/register', userDetails)
+    axios.post('https://localhost:44318/api/authenticate/register', userDetails)
     .then((response) => {
          const result = response.data;
         if(result.success)
