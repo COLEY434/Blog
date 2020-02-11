@@ -16,8 +16,7 @@
                   <textarea v-model="replyMessage" style="width: 100%" id="message2" cols="73" rows="5">
                       
                   </textarea>
-                  <button type="submit" :disabled="!replyMessage" class="btn btn-primary" id="postButton2">Post</button>
-                  <button type="button" class="btn btn-secondary" @click="clearSuccessMessage()" data-dismiss="modal">Close</button>
+                  <button type="submit" :disabled="!replyMessage" class="btn btn-success" id="postButton2">Reply</button>
          </form>
       </div>
     </div>
@@ -28,6 +27,7 @@
 
 <script>
 import axios from "axios";
+import $ from 'jquery'
 export default {
     props: {
         PostUsername: String,
@@ -68,8 +68,9 @@ export default {
                     this.success = true;
                     this.replyMessage = null;
                     setTimeout(()=> {
-                        this.successMessage = null,
-                        this.success = false
+                        this.successMessage = null;
+                        this.success = false;
+                        $('#replybox').modal('hide');
                     }, 3000)
                 }
             })

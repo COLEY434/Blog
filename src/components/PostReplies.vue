@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="col-md-7 offset-md-2">
       <button class="btn btn-info" @click="goBack">Go Back</button><br>
       
 

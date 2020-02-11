@@ -34,7 +34,7 @@ data(){
         posts: this.$store.state.posts 
     } 
 },
-computed: {
+computed: { 
     getPost(){
         return this.$store.getters.getPosts;
     }
@@ -49,9 +49,8 @@ methods: {
     Post(){
        const userData = { user_Id: Number(this.$store.state.userId), message: this.message }
         this.$store.dispatch('sendPost', userData);
-        this.message = null;
-        
-    }
+        this.message = null;    
+    },
 
 }
 }

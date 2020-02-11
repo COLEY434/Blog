@@ -14,7 +14,7 @@
              <p class="text-success" v-if="success">{{successMessage}}</p>
                   <textarea v-model="editMessage" style="width: 100%" id="message1" cols="73" rows="5">                     
                   </textarea>
-                  <button type="submit" :disabled="!editMessage" class="btn btn-primary" id="postButton1">Update</button>
+                  <button type="submit" :disabled="!editMessage" style="float: right" class="btn btn-primary" id="postButton1">Update</button>
          </form>
       </div>
     </div>
@@ -25,6 +25,7 @@
 
 <script>
 import axios from "axios";
+import $ from 'jquery'
 export default {
     watch: {
         EditMessage(newMessage){
@@ -59,8 +60,9 @@ export default {
                     this.success = true;
                     this.editMessage = null;
                      setTimeout(()=> {
-                        this.successMessage = null,
-                        this.success = false
+                        this.successMessage = null;
+                        this.success = false;
+                        $('#EditCommentBox').modal('hide');
                     }, 3000)
                     this.$store.dispatch('getAllPost');
                 }

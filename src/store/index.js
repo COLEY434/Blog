@@ -39,9 +39,12 @@ export default new Vuex.Store({
     },
     setUsername(state, username){
       state.username = username
-    }
+    },
   },
   actions: {
+    RemoveDeletedPost({commit}, newPosts){
+      commit('storePosts', newPosts)
+    },
     setLogoutTimer({dispatch}, expirationTime){
       console.log(expirationTime);
       setTimeout(() => {
