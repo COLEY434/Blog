@@ -56,7 +56,7 @@ methods: {
     Post(){
        const userData = { user_Id: Number(this.$store.state.userId), message: this.message }
         this.$store.dispatch('sendPost', userData);
-        this.message = null;    
+        this.message = '';    
     },
 
 }
