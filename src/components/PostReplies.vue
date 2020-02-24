@@ -1,52 +1,30 @@
 <template>
   <div class="col-md-7 offset-md-2">
-      <button class="btn btn-info" @click="goBack">Go Back</button><br>
+      <button class="btn btn-info" @click="goBack">Go Back</button><br><br>
       
 
-      <div v-for="(post, index) in comments" :key="index" class="posts row">
-        <div class="userimg-box">
-            <img src="../assets/images/download.png" id="poster-icon" alt="">
+      <div v-for="(post, index) in comments" :key="index" class="row card mb-3">
+        <div class="col-md-12" style="background-color: #0B615E">
+          <div style="float: left" class="pl-2 pt-2">
+              <img src="../assets/images/download.png" id="poster-icon" alt="">
+          </div>
+          <div class="mt-2" style="">
+                  <span style="float: right; margin-right: 15px;" v-if="Number(post.userId) === Number($store.state.userId)"><i style="cursor: pointer" data-toggle="modal" data-target="#DeletePost" @click="setPostIdToDelete(post.id)" class="text-danger fas fa-trash-alt"></i></span>
+                  <span class="pl-2" v-if="post.username"><small>{{ post.username }}</small></span>
+                  <span class="pl-2" v-if="!post.username"><small>Anonymous</small></span><br>
+                  <span class="pl-2 card-text"><small class="text-muted">Posted: {{ post.date_posted }}</small></span><br>
+                  <span class="pl-2" v-if="post.date_updated"><small class="text-muted">Updated: {{ post.date_updated }}</small></span>
+                  
+          </div>
         </div>
 
-         <div class="usercomment-box">
-            <div class="mt-2">
-                <span class="ng pl-2">Posted: {{ post.date_posted }}</span>
-                <p class="pl-2">{{ post.date_updated }}</p>
-            </div>
-                      
-             <div class="pl-2">
-                <p>
-                    {{ post.message }}...
-                </p>
-            </div>
-            <div class="pl-2">
-                <center><span class="bkc" data-toggle="modal" data-target="#showFullMessage" id="see-more" @click="seeMore(post.id)">See More</span></center><br>
-            </div>
-
-        </div>              
+        <div class="pl-2 pr-2 pt-2" style="background-color: black">
+            <p style="color: white; white-space: pre-line; font-size: 14px">
+                {{ post.message }}
+            </p>
+        </div>            
                  
     </div>
-
-
-
-
-    <!-- Modal for showing full post message-->
-<div class="modal fade" id="showFullMessage" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <!-- {{ fullPostMessage }} -->
-      </div>
-    </div>
-  </div>
-
-</div>
   </div>
 </template>
 
@@ -55,73 +33,21 @@ export default {
     data(){
         return {
              comments: [],
-            //  fullPost: [],
-            //  fullPostMessage: null
         }
     },
     methods: {
         goBack(){
             this.$router.go(-1);
         },
-
-        // seeMore(Id){
-        //     console.log(this.fullPost);
-        //     const fullPost = this.fullPost.filter(x => x.id == Id);
-
-        //     this.fullPostMessage = fullPost[0].message;
-
-        //     console.log(Id);
-        //     console.log(fullPost);
-        // }
     },
 
     created(){
         this.comments = this.$store.state.comments;
-        // console.log("hahahha");
-        // const postData = [
-        //         {
-        //             id: 1,
-        //             message: "Amazon Simple Storage Service is storage for the Internet. It is designed to make web-scale computing easier for developers. Amazon S3 has a simple web services interface that you can use to store and retrieve any amount of data, at any time, from anywhere on the web. It gives any developer access to the same highly scalable, reliable, fast, inexpensive data storage infrastructure that Amazon uses to run its own global network of web sites. The service aims to maximize benefits of scale and to pass those benefits on to developers.",
-        //             date: "04-11-2019",
-        //             updated: "14-11-2019",
-        //             username: "SantasCruz",
-        //             isLiked: false
-
-        //         },
-        //         {
-        //             id: 2,
-        //             message: "Amazon Simple Storage Service is storage for the Internet. It is designed to make web-scale computing easier for developers. Amazon S3 has a simple web services interface that you can use to store and retrieve any amount of data, at any time, from anywhere on the web. It gives any developer access to the same highly scalable, reliable, fast, inexpensive data storage infrastructure that Amazon uses to run its own global network of web sites. The service aims to maximize benefits of scale and to pass those benefits on to developers.",
-        //             date: "04-11-2019",
-        //             updated: "14-11-2019",
-        //             username: "coley02",
-        //             isLiked: false
-
-        //         }
-        //      ]
-        // this.fullPost = postData;
-
-        //  for(let post of postData){
-        //         const slicedPostMessage = post.message.slice(0, 100);
-
-        //         const userPost = {
-        //             id: post.id,
-        //             message: slicedPostMessage,
-        //             date: post.date,
-        //             username: post.username,
-        //             isLiked: post.isLiked
-        //         };
-        //         this.posts.push(userPost);
-            // }
-            // console.log(this.fullPost);
+            
    }
 }
 </script>
 
 <style>
-    #see-more {
-        padding: 6px;
-        background-color: rgb(12, 161, 161);
-        color: rgb(253, 253, 253);
-        border-radius: 4px;
-    }
+  
 </style>

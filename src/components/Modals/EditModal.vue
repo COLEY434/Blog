@@ -14,7 +14,7 @@
              <p class="text-success" v-if="success">{{successMessage}}</p>
                   <textarea v-model="editMessage" style="width: 100%" id="message1" cols="73" rows="5">                     
                   </textarea>
-                  <button type="submit" :disabled="!editMessage" style="float: right" class="btn btn-primary" id="postButton1">Update</button>
+                  <button type="submit" :disabled="!editMessage || totalWordLength >=250" style="float: right" class="btn btn-primary" id="postButton1">Update</button>
          </form>
       </div>
     </div>
@@ -33,6 +33,9 @@ export default {
         },
         PostId(newPostd){
             this.postId = newPostd
+        },
+        editMessage(newValue){
+            this.CountWords(newValue.length)
         }
     },
     props: {
@@ -42,14 +45,19 @@ export default {
     data(){
         return{
             editMessage: this.EditMessage,
-            postId: null,
+            postId: this.PostId,
             successMessage: '',
-            success: false
+            success: false,
+            totalWordLength: null
         }
     },
     methods: {
+
+        CountWords(length){
+            this.totalWordLength = length
+        },
           EditPost(){      
-            axios.put("https://localhost:44318/api/post/update", {
+            axios.put("https://blogapi.azurewebsites.net/api/post/update", {
                 post_Id: this.postId,
                 message: this.editMessage
             })
@@ -58,7 +66,7 @@ export default {
                 if(data.success){
                     this.successMessage = data.message;
                     this.success = true;
-                    this.editMessage = null;
+                    this.editMessage = '';
                      setTimeout(()=> {
                         this.successMessage = null;
                         this.success = false;

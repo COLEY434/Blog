@@ -16,7 +16,7 @@
                   <textarea v-model="replyMessage" style="width: 100%" id="message2" cols="73" rows="5">
                       
                   </textarea>
-                  <button type="submit" :disabled="!replyMessage" class="btn btn-success" id="postButton2">Reply</button>
+                  <button type="submit" :disabled="!replyMessage || totalWordLength >=500" class="btn btn-success" id="postButton2">Reply</button>
          </form>
       </div>
     </div>
@@ -40,6 +40,9 @@ export default {
         PostId(newPostd){
             this.postId = newPostd
         },
+        replyMessage(newValue){
+            this.CountWords(newValue.length)
+    }
     },
     data(){
         return {
@@ -48,15 +51,19 @@ export default {
             successMessage: '',
             postUsername: null,
             postId: null,
-            userId: Number(this.$store.state.userId)
+            userId: Number(this.$store.state.userId),
+            totalWordLength: null
         }
     },
     methods: {
+        CountWords(length){
+            this.totalWordLength = length
+        },
         clearSuccessMessage(){
             this.successMessage = null
         },
         PostReply(){
-            axios.post("https://localhost:44318/api/post/reply/create", {
+            axios.post("https://blogapi.azurewebsites.net/api/post/reply/create", {
                 post_Id: this.postId,
                 message: this.replyMessage,
                 user_Id: this.userId

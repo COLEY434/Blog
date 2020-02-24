@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <app-nav></app-nav>
-    <router-view />
+    <app-nav></app-nav><br><br><br>
+    <router-view></router-view>
   </div>
 </template>
 
@@ -15,6 +15,7 @@ export default {
   },
   created(){
     this.$store.dispatch('tryAutoLogin');
+    this.$store.dispatch('getAllLikes');
     this.$store.dispatch('getAllPost');
   },
  

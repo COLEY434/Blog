@@ -8,11 +8,11 @@
 
       <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
         <ul class="navbar-nav mr-5">
-          <li class="nav-item">
-            <router-link to="/posts" v-if="auth" class="nav-link">Posts</router-link> 
+          <li class="nav-item" @click="collapseNavBar">
+            <router-link to="/posts" v-if="auth" class="nav-link">Feed</router-link> 
           </li>
       
-          <li class="nav-item">
+          <li class="nav-item" @click="collapseNavBar">
             <router-link to="/dashboard" v-if="auth" class="nav-link">Dashboard</router-link> 
           </li>
           
@@ -20,7 +20,9 @@
             <span v-if="username" class="nav-link"> Welcome {{username}}</span>
             <span v-else class="nav-link">Welcome Anonymous </span>
           </li>
-
+            <li class="nav-item" @click="collapseNavBar">
+            <router-link to="/profile" v-if="auth" class="nav-link">Profile</router-link> 
+          </li>
            <li class="nav-item">
              <span class="nav-link" v-if="auth" style="cursor: pointer" @click="Logout()">Logout</span>
            </li>
@@ -38,6 +40,7 @@
 </template>
 
 <script>
+import $ from 'jquery'
 export default {
 data(){
   return{
@@ -61,18 +64,27 @@ computed: {
 methods: {
   Logout(){
     this.$store.dispatch('logout');
-  }
+  },
+  collapseNavBar(){
+        $('.collapse').collapse('hide');
+    },  
 }
 }
 </script>
 
 <style scoped>
   nav{
-    background-color: rgb(45, 92, 86);
+    background-color: #243447;
     color: rgb(255, 255, 255);
+    /* rgb(45, 92, 86) */
+    
     
   }
-
+.container-fluid {
+  position: fixed;
+  z-index: 100;
+  box-shadow: 0.3em 0.3em 1em rgba(19,27,37,0.8);
+}
   nav a{
     color: rgb(255, 255, 255);
   }

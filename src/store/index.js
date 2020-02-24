@@ -10,6 +10,7 @@ export default new Vuex.Store({
   state: {
     userId: null,
     posts: [],
+    likes: [],
     dateTime: null,
     updatedDateTime: null,
     comments: [],
@@ -26,6 +27,9 @@ export default new Vuex.Store({
     storePosts(state, payload){
       state.posts = payload
     },
+    storeLikes(state, payload){
+      state.likes = payload
+    },
     setComments(state, payload){
       state.comments = payload
     },
@@ -33,7 +37,7 @@ export default new Vuex.Store({
       state.userId = null,
       state.token = null,
       state.username = null
-    },
+    }, 
     setProfileData(state, userData){
       state.userData = userData
     },
@@ -46,7 +50,7 @@ export default new Vuex.Store({
       commit('storePosts', newPosts)
     },
     setLogoutTimer({dispatch}, expirationTime){
-      console.log(expirationTime);
+      
       setTimeout(() => {
         dispatch('logout')
       }, expirationTime)
@@ -64,8 +68,24 @@ export default new Vuex.Store({
     ProfileData({commit}, userData){
       commit('setProfileData', userData)
     },
-    getComments({commit}, comments){
+    getComments({commit, dispatch, state}, commentData){
       
+          const comments = []
+          for(let comment in commentData){
+           
+                   dispatch('getDatePosted', commentData[comment].date_posted);
+                   if(commentData[comment].date_updated)
+                   {
+                    dispatch('getDateUpdated', commentData[comment].date_updated);
+                    commentData[comment].date_updated = state.updatedDateTime;
+                   }
+                   commentData[comment].date_posted = state.dateTime;
+
+                  comments.unshift(commentData[comment]);
+                  state.dateTime = null
+                  state.updatedDateTime = null
+              
+          }
         commit('setComments', comments);
     },
     sendPost(context,userData){
@@ -73,7 +93,7 @@ export default new Vuex.Store({
       // if(!state.token){
       //   return;
       // }
-      axios.post('https://localhost:44318/api/post/create', userData)
+      axios.post('https://blogapi.azurewebsites.net/api/post/create', userData)
           .then((response) => {
             const data = response.data;
             if(data.success){
@@ -87,7 +107,7 @@ export default new Vuex.Store({
     },
     getAllPost({commit, dispatch, state}){ 
       //https://localhost:44318
-       axios.get('https://localhost:44318/api/post/get-posts')
+       axios.get('https://blogapi.azurewebsites.net/api/post/get-posts')
           .then((response) => {  
               const data = response.data; 
               const result = [];  
@@ -102,6 +122,8 @@ export default new Vuex.Store({
                   data[post].date_posted = state.dateTime;
 
                   result.unshift(data[post]);
+                  state.dateTime = null
+                  state.updatedDateTime = null
               }
               
               commit('storePosts', result);
@@ -110,6 +132,20 @@ export default new Vuex.Store({
           .catch((error) => {
                console.log(error);
           });
+    },
+    getAllLikes({commit}){
+      axios.get('https://blogapi.azurewebsites.net/api/likes/get-likes')
+           .then((response) => {
+            const data = response.data; 
+            const result = [];  
+
+            for(let like in data){
+              result.push(data[like])
+            }
+
+            commit('storeLikes', result)
+           })
+            .catch((err) => console.log(err))
     },
     getDatePosted(context, datePosted){
       var months = ["Jan", "Feb", "March", "April", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"];
@@ -165,6 +201,7 @@ export default new Vuex.Store({
         localStorage.removeItem('expiresIn');
         localStorage.removeItem('username');
         router.push('/login');
+        return 
       }
 
       commit('authUser', {
@@ -180,6 +217,9 @@ export default new Vuex.Store({
   getters: {
     getPosts: state => {
       return state.posts
+    },
+    getLikes: state => {
+      return state.likes
     },
     isAuthenticated(state){
       return state.token !== null;

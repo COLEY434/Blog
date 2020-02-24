@@ -10,6 +10,7 @@ import ChangePassword from '../components/Dashboard/Password'
 import Profile from '../components/Dashboard/Profile'
 import EditProfile from '../components/Dashboard/EditProfile'
 import NotFoundComponent from '../components/NotFoundComponent'
+import NewPofileComponent from '../components/Profile/Profile'
 
 
 
@@ -35,6 +36,16 @@ const routes = [
     component: Login
   },
   {
+    path: '/profile',
+    name: 'profile',
+    component: NewPofileComponent
+  },
+  {
+    path: '/profile/:id',
+    name: 'profileU',
+    component: NewPofileComponent
+  },
+  {
     path: '/posts',
     //name: 'posts',
     component: Posts,
@@ -44,7 +55,7 @@ const routes = [
         component: Post
       },
       {
-        path: ':username/comments',
+        path: ':postId/:username/comments',
         component: PostReplies
       }
       

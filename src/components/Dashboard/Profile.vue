@@ -4,7 +4,7 @@
           <div style="border: 1px solid black">
               <!-- <img src="http://127.0.0.1:8887/ProfilePictures/5-Profile_Pics-photo-of-person-s-hand-with-blue-light-3345270.jpg" alt="">  -->
               <!-- <img :src="pic" alt=""> -->
-             <img class="img-fluid" :src="imgUrl" alt="">
+             <img class="img-fluid" style="width: 70px; height: 70px; border-radius: 50%" :src="imgUrl" alt="">
               <!--<i v-else class="fas fa-user" style="font-size: 300px; margin-left: 70px;"></i> -->
           </div>
         </div>
@@ -39,7 +39,7 @@ created(){
     const UserID = this.$store.state.userId;
     this.userId = UserID;
    // console.log(UserID);
-    axios.get('https://localhost:44318/api/user/' + UserID)
+    axios.get('https://blogapi.azurewebsites.net/api/user/' + UserID)
         .then((response) => {
             console.log(response.data);
             this.UserInfo = response.data;
@@ -81,7 +81,7 @@ methods: {
         }
         let forminfo = new FormData(myForm);
         const userID = Number(this.userId);
-        axios.post('https://localhost:44318/api/user/upload-image/' + userID,
+        axios.post('https://blogapi.azurewebsites.net/api/user/upload-image/' + userID,
             forminfo,
            { headers: { 'Content-Type': 'multipart/form-data' }}
         )

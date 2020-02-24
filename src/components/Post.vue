@@ -2,30 +2,31 @@
   <div  class="col-md-7 offset-md-2">
     <div v-for="(post, index) in blogPosts" :key="index" class="row card mb-2">
         <!-- contains the usernamwe, date posted, and updated plus user icon -->
-        <div class="col-md-12" style="margin: 0px;">
+        <div class="col-md-12 " style="margin: 0px; background-color: #0B615E; border-bottom: 1px solid #0B615E">
             <div style="float: left" class="pl-2 pt-2">
-                <img src="../assets/images/download.png" class="img-fluid" id="poster-icon" alt="">
+                <img :src="post.img_url" v-if="post.img_url" style="cursor: pointer; border-radius: 50%" @click="loadUserProfile(post.userId)" class="img-fluid" id="poster-icon" alt="">
+                <img src="../assets/images/download.png" v-if="!post.img_url" style="cursor: pointer; border-radius: 50%" @click="loadUserProfile(post.userId)" class="img-fluid" id="poster-icon" alt="">
             </div>
-
+             
              <div class="mt-2" style="">
                 <span style="float: right; margin-right: 15px;" v-if="Number(post.userId) === Number($store.state.userId)"><i style="cursor: pointer" data-toggle="modal" data-target="#DeletePost" @click="setPostIdToDelete(post.id)" class="text-danger fas fa-trash-alt"></i></span>
-                 <span class="pl-2" v-if="post.username"><small>{{ post.username }}</small></span>
-                <span class="pl-2" v-if="!post.username"><small>Anonymous</small></span><br>
-                <span class="pl-2 card-text"><small class="text-muted">Posted: {{ post.date_posted }}</small></span><br>
-                <span class="pl-2" v-if="post.date_updated"><small class="text-muted">Updated: {{ post.date_updated }}</small></span>
+                <span class="pl-2 tc" v-if="post.username"><small>{{ post.username }}</small></span>
+                <span class="pl-2 tc" v-if="!post.username"><small>Anonymous</small></span><br>
+                <span class="pl-2 tc card-text"><small>Posted: {{ post.date_posted }}</small></span><br>
+                <span class="pl-2 tc" v-if="post.date_updated"><small>Updated: {{ post.date_updated }}</small></span>
                 
             </div>
         </div>
 
 
         <!-- contains the post message -->
-        <div class="pl-2 pr-2 pt-2" style="background-color: black">
-            <p style="color: #0B2161; white-space: pre-line; font-size: 14px">
+        <div class="pl-2 pr-2 pt-2">
+            <p style="white-space: pre-line; font-size: 14px">
                 {{ post.message }}
             </p>
         </div>
                    
-             <PostLikeEditReply :storeUserId="Number($store.state.userId)" v-on:loadPostReplies="loadPostReplies" v-on:setReplyInfo="setReplyInfo" v-on:setEditInfo="setEditInfo" :postId="post.id" :username="post.username" :userId="post.userId" :postMessage="post.message"/>    
+             <PostLikeEditReply :likes="likes" :storeUserId="Number($store.state.userId)" v-on:loadPostReplies="loadPostReplies" v-on:setReplyInfo="setReplyInfo" v-on:setEditInfo="setEditInfo" :postId="post.id" :username="post.username" :userId="post.userId" :postMessage="post.message"/>    
     </div>
 <!-- Component for editing posts-->
     <EditModal 
@@ -84,19 +85,29 @@ import EditModal from './Modals/EditModal'
 import ReplyModal from './Modals/ReplyModal'
 import $ from 'jquery'
 export default {
-    data(){ 
+ data(){ 
         return {
             editMessage: '',
             postId: null,
             postUsername: null,
             success: false,
             successMessage: null,
-            blogPosts: this.posts
+            blogPosts: this.posts,
+            likes: this.$store.state.likes 
+
         }
     },
+ computed: { 
+    getLikes(){
+        return this.$store.getters.getLikes;
+    }
+},
     watch: {
         posts(newBlogPost){
             this.blogPosts = newBlogPost
+        },
+        getLikes(newLikes){
+            this.likes = newLikes
         }
     },
     components: {
@@ -106,11 +117,14 @@ export default {
     },
     props: ['posts'],
 methods: {
+    loadUserProfile(postUserId){
+        this.$router.push('/profile/' + postUserId);
+    },
     setPostIdToDelete(postId){
         this.postId = postId
         },
     DeletePost(){
-        axios.delete('https://localhost:44318/api/post/delete/' + Number(this.postId))
+        axios.delete('https://blogapi.azurewebsites.net/api/post/delete/' + Number(this.postId))
                 .then((response) => {
                     const {success, message} = response.data;   
                     if(success){
@@ -138,7 +152,7 @@ methods: {
         }, 
     closeModal(){
         $('#DeletePost').modal('hide');
-    },      
+    },     
     setEditInfo(Id, message){
         this.postId = Id;    
         this.editMessage = message;  
@@ -151,12 +165,12 @@ methods: {
 
     loadPostReplies(PostId, PostUsername){
         const postUsername = PostUsername == null ? 'Anonymous' : PostUsername;
-        axios.get("https://localhost:44318/api/post/get-comments/" + PostId)
+        axios.get("https://blogapi.azurewebsites.net/api/post/get-comments/" + PostId)
                 .then((response) => {
                     const data = response.data;
                     if(data.success){
                         this.$store.dispatch('getComments', data.comments);
-                        this.$router.push('posts/' + postUsername + '/comments');
+                        this.$router.push('posts/' + PostId + "/" + postUsername + '/comments');
                     }
                     
                 })
@@ -194,6 +208,9 @@ methods: {
     }
     .content {
         padding-left: 4px;
+    }
+    .tc {
+        color: #F2F2F2;
     }
 
     #username {
