@@ -4,8 +4,8 @@
         <center>
         <h3 class="color">Profile</h3> 
          <div style="border: 2px solid white; position: relative">
-            <img v-if="!userInfo.img_url" src="../../assets/images/wolve.jpg" style="border-radius: 50%" alt="">
-            <img v-if="userInfo.img_url" :src="userInfo.img_url" style="border-radius: 50%" alt="">
+            <img v-if="!userInfo.img_url" src="../../assets/images/wolve.jpg" class="img-fluid" style="border-radius: 50%" alt="">
+            <img v-if="userInfo.img_url" :src="userInfo.img_url" class="img-fluid" style="border-radius: 50%" alt="">
             <span style="position: absolute; right: 0px" class="color">Edit</span>
             <span style="position: absolute; right: 5px; top: 30px;color: white; cursor: pointer; padding:5px 10px 5px 10px; border: 1px solid blue; border-radius: 5px">Follow</span>
             
