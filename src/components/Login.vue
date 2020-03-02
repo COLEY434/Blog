@@ -31,7 +31,14 @@
 import axios from 'axios';
 export default {
     created(){
-        console.log(process.env.NODE_ENV)
+        if(process.env.NODE_ENV == "production"){
+            console.log("it is in production")
+        }
+        else {
+            console.log("it is in development")
+        }
+
+        //console.log(process.env.NODE_ENV)
     //     if(process.env.NODE_ENV.toString() == "production"){
     // console.log(process.env.NODE_ENV)
 //}
