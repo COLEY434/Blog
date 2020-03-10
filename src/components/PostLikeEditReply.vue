@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import { axiosInstance } from "../Api/axiosConfig";
 export default {
     props: {
         postId: Number,
@@ -44,7 +44,7 @@ export default {
     },
     methods: {
       likePost(postId, UserId){
-        axios.post('https://blogapi.azurewebsites.net/api/likes/like-post/' + Number(postId) + "/" + Number(UserId))
+        axiosInstance.post('/likes/like-post/' + Number(postId) + "/" + Number(UserId))
               .then((response) => {
                 const { success } = response.data
                 if(success){

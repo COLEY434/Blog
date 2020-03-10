@@ -79,7 +79,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import { axiosInstance } from "../Api/axiosConfig";
 import PostLikeEditReply from './PostLikeEditReply'
 import EditModal from './Modals/EditModal'
 import ReplyModal from './Modals/ReplyModal'
@@ -124,7 +124,7 @@ methods: {
         this.postId = postId
         },
     DeletePost(){
-        axios.delete('https://blogapi.azurewebsites.net/api/post/delete/' + Number(this.postId))
+        axiosInstance.delete('/post/delete/' + Number(this.postId))
                 .then((response) => {
                     const {success, message} = response.data;   
                     if(success){
@@ -165,7 +165,7 @@ methods: {
 
     loadPostReplies(PostId, PostUsername){
         const postUsername = PostUsername == null ? 'Anonymous' : PostUsername;
-        axios.get("https://blogapi.azurewebsites.net/api/post/get-comments/" + PostId)
+        axiosInstance.get("/post/get-comments/" + PostId)
                 .then((response) => {
                     const data = response.data;
                     if(data.success){

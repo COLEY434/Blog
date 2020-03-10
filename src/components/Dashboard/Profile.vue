@@ -32,14 +32,14 @@
 </template>
 
 <script>
-import axios from 'axios';
+import { axiosInstance } from '../../Api/axiosConfig';
 
 export default {
 created(){
     const UserID = this.$store.state.userId;
     this.userId = UserID;
    // console.log(UserID);
-    axios.get('https://blogapi.azurewebsites.net/api/user/' + UserID)
+    axiosInstance.get('/user/' + UserID)
         .then((response) => {
             console.log(response.data);
             this.UserInfo = response.data;
@@ -81,7 +81,7 @@ methods: {
         }
         let forminfo = new FormData(myForm);
         const userID = Number(this.userId);
-        axios.post('https://blogapi.azurewebsites.net/api/user/upload-image/' + userID,
+        axiosInstance.post('/user/upload-image/' + userID,
             forminfo,
            { headers: { 'Content-Type': 'multipart/form-data' }}
         )

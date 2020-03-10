@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import { axiosInstance } from "../../Api/axiosConfig";
 import $ from 'jquery'
 export default {
     watch: {
@@ -57,7 +57,7 @@ export default {
             this.totalWordLength = length
         },
           EditPost(){      
-            axios.put("https://blogapi.azurewebsites.net/api/post/update", {
+            axiosInstance.put("/post/update", {
                 post_Id: this.postId,
                 message: this.editMessage
             })

@@ -1,8 +1,17 @@
 import axios from 'axios'
+import store from '../store/index'
 
-if(process.env.NODE_ENV === "production"){
-    console.log(process.env.NODE_ENV)
-}
-export const instance = axios.create({
-    baseURL: 'https://localhost:44318/api'
+export const axiosInstance = axios.create({
+    baseURL: process.env.NODE_ENV === "production" ? process.env.VUE_APP_BASE_URL_PROD : process.env.VUE_APP_BASE_URL_DEV,
 })
+
+axiosInstance.interceptors.request.use(
+    (config) => {
+      config.headers['Authorization'] = `Bearer ${ store.state.token }`;
+      return config;
+    }, 
+  
+    (error) => {
+      return Promise.reject(error);
+    }
+  );

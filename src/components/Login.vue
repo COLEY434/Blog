@@ -28,21 +28,9 @@
 </template>
 
 <script>
-import axios from 'axios';
+import { axiosInstance } from '../Api/axiosConfig';
 export default {
-    created(){
-        if(process.env.NODE_ENV == "production"){
-            console.log("it is in production")
-        }
-        else {
-            console.log("it is in development")
-        }
-
-        //console.log(process.env.NODE_ENV)
-    //     if(process.env.NODE_ENV.toString() == "production"){
-    // console.log(process.env.NODE_ENV)
-//}
-    },
+    
     data(){
         return {
             user: {
@@ -84,7 +72,7 @@ export default {
             
             if(this.user.email !== '' && this.user.password !== ''){
 
-                axios.post('https://blogapi.azurewebsites.net/api/authenticate/login', this.user)
+                axiosInstance.post('/authenticate/login', this.user)
                 .then((response) => {
                      const result = response.data;
                     if(result.success)

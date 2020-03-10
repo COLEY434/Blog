@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import axios from 'axios'
+import { axiosInstance } from '../Api/axiosConfig.js'
 import router from '../router/index'
 
 
@@ -93,7 +93,7 @@ export default new Vuex.Store({
       // if(!state.token){
       //   return;
       // }
-      axios.post('https://blogapi.azurewebsites.net/api/post/create', userData)
+      axiosInstance.post('/post/create', userData)
           .then((response) => {
             const data = response.data;
             if(data.success){
@@ -106,8 +106,7 @@ export default new Vuex.Store({
           });      
     },
     getAllPost({commit, dispatch, state}){ 
-      //https://localhost:44318
-       axios.get('https://blogapi.azurewebsites.net/api/post/get-posts')
+      axiosInstance.get('/post/get-posts')
           .then((response) => {  
               const data = response.data; 
               const result = [];  
@@ -134,7 +133,7 @@ export default new Vuex.Store({
           });
     },
     getAllLikes({commit}){
-      axios.get('https://blogapi.azurewebsites.net/api/likes/get-likes')
+      axiosInstance.get('/likes/get-likes')
            .then((response) => {
             const data = response.data; 
             const result = [];  

@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import { axiosInstance } from "../../Api/axiosConfig";
 import $ from 'jquery'
 export default {
     props: {
@@ -63,7 +63,7 @@ export default {
             this.successMessage = null
         },
         PostReply(){
-            axios.post("https://blogapi.azurewebsites.net/api/post/reply/create", {
+            axiosInstance.post("/post/reply/create", {
                 post_Id: this.postId,
                 message: this.replyMessage,
                 user_Id: this.userId

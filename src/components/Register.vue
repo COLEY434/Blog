@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import { axiosInstance } from '../Api/axiosConfig';
 export default {
 data(){
     return {
@@ -108,7 +108,7 @@ methods: {
 
 if(this.user.email !== '' || this.user.password !== ''){
 
-    axios.post('https://blogapi.azurewebsites.net/api/authenticate/register', userDetails)
+    axiosInstance.post('/authenticate/register', userDetails)
     .then((response) => {
          const result = response.data;
         if(result.success)

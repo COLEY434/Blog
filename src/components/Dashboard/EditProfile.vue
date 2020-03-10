@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import { axiosInstance } from '../../Api/axiosConfig';
 export default {
     created(){
         this.userId = this.$store.state.userId
@@ -87,10 +87,10 @@ export default {
 
     methods : {
         EditProfile(){
-            console.log(this.ProfileData);
+            
             const userProfileData = this.ProfileData;
                   userProfileData.Age = Number(this.ProfileData.Age);
-            axios.put('https://blogapi.azurewebsites.net/api/user/edit-profile/' + this.userId, userProfileData)
+            axiosInstance.put('/user/edit-profile/' + this.userId, userProfileData)
                 .then((response) => {
                     if(response.data.success){
                         this.successMessage = response.data.message;
