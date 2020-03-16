@@ -21,15 +21,15 @@
             <span v-else class="nav-link">Welcome Anonymous </span>
           </li>
             <li class="nav-item" @click="collapseNavBar">
-            <router-link to="/profile" v-if="auth" class="nav-link">Profile</router-link> 
+            <router-link :to="profile" v-if="auth" class="nav-link">Profile</router-link> 
           </li>
            <li class="nav-item">
              <span class="nav-link" v-if="auth" style="cursor: pointer" @click="Logout()">Logout</span>
            </li>
-           <li class="nav-item">
+           <li class="nav-item" @click="collapseNavBar">
            <router-link v-if="!auth" to="/login" class="nav-link">Sign In</router-link> 
            </li>
-            <li class="nav-item">
+            <li class="nav-item" @click="collapseNavBar">
             <router-link v-if="!auth" to="/register" class="nav-link">Sign up</router-link> 
             </li>
         </ul>
@@ -44,12 +44,17 @@ import $ from 'jquery'
 export default {
 data(){
   return{
-    username: this.$store.state.username
+    username: this.$store.state.username,
+    //userId: this.$store.state.userId,
+    profile: `/profile/${this.$store.state.userId}`
   }
 },
 watch: {
     getUsername(username){
         this.username = username;
+    },
+    getUserId(newUserId){
+        this.profile = `/profile/${newUserId}`;
     }
 },
 computed: {
@@ -58,6 +63,9 @@ computed: {
   },
   getUsername(){
     return this.$store.getters.getUsername;
+  },
+  getUserId(){
+    return this.$store.state.userId
   }
 },
 

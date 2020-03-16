@@ -5,9 +5,9 @@
         <h3 class="color">Profile</h3> 
          <div style="border: 2px solid white; position: relative">
             <img v-if="!userInfo.img_url" src="../../assets/images/wolve.jpg" class="img-fluid" style="border-radius: 50%" alt="">
-            <img v-if="userInfo.img_url" :src="userInfo.img_url" class="img-fluid" style="border-radius: 50%" alt="">
+            <img v-if="userInfo.img_url" :src="userInfo.img_url" class="img-fluid" style="border-radius: 50%; max-height: 200px" alt="">
             <span style="position: absolute; right: 0px" class="color">Edit</span>
-            <span style="position: absolute; right: 5px; top: 30px;color: white; cursor: pointer; padding:5px 10px 5px 10px; border: 1px solid blue; border-radius: 5px">Follow</span>
+            <span v-if="userId !== Number($store.state.userId)" @click="Follow(userId, Number($store.state.userId))" id="follow-button">{{ isFollowing ? "Following" : "Follow"}}</span>
             
             <br>
             <span class="color">Name: {{userInfo.surname + ' ' + userInfo.firstname }} </span><br>
@@ -17,13 +17,13 @@
          </div>
          </center>
          <div style="border: 2px solid white; margin-left: 1px; margin-right: 1px" class="row">
-           <div class="col column-style" @click="SelectedComponent = 'Posts'">
+           <div class="col column-style" style="border-bottom: 2px solid red" id="Posts" @click="SelectComponent('Posts')">
               Posts
             </div>
-           <div class="col column-style" @click="SelectedComponent = 'Followers'">
+           <div class="col column-style" id="Followers" @click="SelectComponent('Followers')">
              Followers
            </div>
-           <div class="col column-style" @click="SelectedComponent = 'Following'">
+           <div class="col column-style" id="Following" @click="SelectComponent('Following')">
              Following
             
            </div>
@@ -39,7 +39,7 @@
 
 <script>
 import Encapsulate from './Encapsulate'
-import axios from 'axios'
+import { axiosInstance } from '../../Api/axiosConfig'
 export default {
   components: {
      Encapsulate
@@ -48,22 +48,75 @@ data(){
   return {
     SelectedComponent: 'Posts',
     userId: Number(this.$route.params.id),
-    userInfo: {}
+    userInfo: {},
+    isFollowing: false
   }
 },
-mounted(){
-  axios.get('https://blogapi.azurewebsites.net/api/user/' + this.userId)
+watch: {
+  $route(newRouteData){
+    this.userId = Number(newRouteData.params.id)
+    this.GetUser(this.userId)
+    this.GetFollowingStatus(this.userId, Number(this.$store.state.userId))
+  }
+},
+created(){
+this.GetUser(this.userId)
+this.GetFollowingStatus(this.userId, Number(this.$store.state.userId))
+},
+
+methods : {
+  Follow(userToFollowOrUnfollowId, userThatWantToFollowORUnfollowId){
+    axiosInstance.post(`/follow/${userToFollowOrUnfollowId}/${userThatWantToFollowORUnfollowId}`)
+      .then((response) => {
+        const { following } = response.data
+          this.isFollowing = Boolean(following)
+        }
+      )
+      .catch((err) => console.log(err))
+  },
+
+  GetUser(PostUserId){
+    axiosInstance.get('/user/' + PostUserId)
+      .then((response) => {
+          const data = response.data
+          this.userInfo = data
+      })
+      .catch((err) => console.log(err))
+  },
+
+  GetFollowingStatus(PostUserId, LoggedInUserId){
+    axiosInstance.get(`/follow/get-Following-status/${PostUserId}/${LoggedInUserId}`)
         .then((response) => {
-          //console.log(response.data)
-            const data = response.data
-            this.userInfo = data
+           this.isFollowing = Boolean(response.data.following)
         })
           .catch((err) => console.log(err))
+  },
+
+  SelectComponent(selected){
+    this.SelectedComponent = selected
+    if(selected == "Posts"){
+      document.getElementById("Posts").style.borderBottom = "2px solid red"
+      document.getElementById("Followers").style.borderBottom = "none"
+      document.getElementById("Following").style.borderBottom = "none"
+    }
+    if(selected == "Followers"){
+      document.getElementById("Followers").style.borderBottom = "2px solid red"
+      document.getElementById("Posts").style.borderBottom = "none"
+      document.getElementById("Following").style.borderBottom = "none"
+    }
+    if(selected == "Following"){
+      document.getElementById("Following").style.borderBottom = "2px solid red"
+      document.getElementById("Followers").style.borderBottom = "none"
+      document.getElementById("Posts").style.borderBottom = "none"
+    }
+   
+    
+  }
 }
 }
 </script>
 
-<style>
+<style scoped>
 .color {
   color: white
 }
@@ -73,5 +126,15 @@ mounted(){
   color: white;
   padding-top: 7px;
   padding-bottom: 7px
+}
+#follow-button {
+  position: absolute; 
+  right: 5px; 
+  top: 30px;
+  color: white;
+  cursor: pointer; 
+  padding:5px 10px 5px 10px;
+  border: 1px solid blue;
+  border-radius: 5px;
 }
 </style>

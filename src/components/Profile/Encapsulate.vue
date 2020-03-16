@@ -17,6 +17,9 @@ components: {
   watch: {
       selected(newSelected){
           this.SelectedComponent = newSelected
+      },
+      userId(newId){
+          this.user_Id = newId
       }
   },
   props : {
@@ -29,11 +32,11 @@ components: {
           user_Id: this.userId
       }
   },
-  mounted(){
+//   mounted(){
        
-      this.SelectedComponent = this.selected
-      this.user_Id = this.userId
-  }
+//       this.SelectedComponent = this.selected
+//       this.user_Id = this.userId
+//   }
 }
 </script>
 

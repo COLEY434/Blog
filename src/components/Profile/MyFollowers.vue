@@ -1,15 +1,54 @@
 <template>
 <div>
   <h1 style="color: white">My Followers!!!</h1>
-  <Followers></Followers>
+  <Followers v-if="getUsers" :Users="getUsers"></Followers>
+  <div v-else>
+    No Followers
+  </div>
 </div>
 </template>
 
 <script>
+import { axiosInstance } from '../../Api/axiosConfig'
 import Followers from './Follwing-Followers'
 export default {
+  data(){
+    return {
+    users: [],
+    message: ""
+    }
+  },
+ watch : {
+    getUsers(newUSers){
+      this.users = newUSers
+    }
+  },
+computed: {
+    getUsers(){
+      return this.users
+    }
+  },
 components: {
   Followers
+},
+props: {
+  userId : Number
+},
+
+created(){
+  axiosInstance.get(`/follow/get-followers/${this.userId}`)
+    .then((response) => {
+        const {success, message, followers} = response.data
+        if(success){
+          this.users = followers
+          this.message = message
+        }
+        if(!success){
+          this.message = message
+        }      
+    })
+    .catch((err) => {console.log(err)})
+
 }
 }
 </script>
