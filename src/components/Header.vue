@@ -20,8 +20,11 @@
             <span v-if="username" class="nav-link"> Welcome {{username}}</span>
             <span v-else class="nav-link">Welcome Anonymous </span>
           </li>
-            <li class="nav-item" @click="collapseNavBar">
+          <li class="nav-item" @click="collapseNavBar">
             <router-link :to="profile" v-if="auth" class="nav-link">Profile</router-link> 
+          </li>
+          <li class="nav-item" @click="collapseNavBar">
+            <router-link to="/change-password/edit" v-if="auth" class="nav-link">Change Password</router-link> 
           </li>
            <li class="nav-item">
              <span class="nav-link" v-if="auth" style="cursor: pointer" @click="Logout()">Logout</span>
