@@ -6,13 +6,14 @@
          <div style="border: 2px solid white; position: relative">
             <img v-if="!userInfo.img_url" src="../../assets/images/wolve.jpg" class="img-fluid" style="border-radius: 50%" alt="">
             <img v-if="userInfo.img_url" :src="userInfo.img_url" class="img-fluid" style="border-radius: 50%; max-height: 200px" alt="">
-            <span style="position: absolute; right: 0px" class="color">Edit</span>
+            <span v-if="userId === Number($store.state.userId)" @click="LoadEditProfile" id="profile-edit-button">Edit-profile</span>
             <span v-if="userId !== Number($store.state.userId)" @click="Follow(userId, Number($store.state.userId))" id="follow-button">{{ isFollowing ? "Following" : "Follow"}}</span>
             
             <br>
             <span class="color">Name: {{userInfo.surname + ' ' + userInfo.firstname }} </span><br>
             <span class="color">Joined: {{ userInfo.date_joined }}</span><br>
             <span class="color">Email: {{ userInfo.email }}</span><br>
+            <span class="color">Country: {{ userInfo.country }}</span><br>
              <br>
          </div>
          </center>
@@ -80,6 +81,7 @@ methods : {
       .then((response) => {
           const data = response.data
           this.userInfo = data
+          this.$store.dispatch('ProfileData', data)
       })
       .catch((err) => console.log(err))
   },
@@ -111,7 +113,12 @@ methods : {
     }
    
     
+  },
+
+  LoadEditProfile(){
+    this.$router.push(`/profile/${this.userId}/edit`)
   }
+
 }
 }
 </script>
@@ -136,5 +143,14 @@ methods : {
   padding:5px 10px 5px 10px;
   border: 1px solid blue;
   border-radius: 5px;
+}
+#profile-edit-button {
+  position: absolute;
+  right: 2px;
+  color: white;
+  border: 1px solid white;
+  border-radius: 5px;
+  padding: 5px 10px 5px 10px;
+  cursor: pointer;
 }
 </style>

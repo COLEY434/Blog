@@ -21,6 +21,9 @@ export default {
  watch : {
     getUsers(newUSers){
       this.users = newUSers
+    },
+    userId(newUserId){
+      this.GetFollowers(newUserId)
     }
   },
 computed: {
@@ -36,7 +39,12 @@ props: {
 },
 
 created(){
-  axiosInstance.get(`/follow/get-followers/${this.userId}`)
+  this.GetFollowers(this.userId)
+},
+
+methods: {
+  GetFollowers(userId){
+    axiosInstance.get(`/follow/get-followers/${userId}`)
     .then((response) => {
         const {success, message, followers} = response.data
         if(success){
@@ -48,7 +56,7 @@ created(){
         }      
     })
     .catch((err) => {console.log(err)})
-
+  }
 }
 }
 </script>

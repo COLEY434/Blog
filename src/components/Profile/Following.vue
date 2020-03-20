@@ -26,18 +26,26 @@ data(){
  watch : {
     getUsers(newUSers){
       this.users = newUSers
+    },
+     userId(newUserId){
+      this.GetFollowings(newUserId)
     }
   },
 computed: {
     getUsers(){
       return this.users
-    }
+    },
   },
 props: {
   userId : Number
 },
-  created(){
-  axiosInstance.get(`/follow/get-followings/${this.userId}`)
+created(){
+  this.GetFollowings(this.userId)
+},
+
+methods: {
+  GetFollowings(userId){
+    axiosInstance.get(`/follow/get-followings/${userId}`)
     .then((response) => {
         const {success, message, followings} = response.data
         if(success){
@@ -49,7 +57,7 @@ props: {
         }      
     })
     .catch((err) => {console.log(err)})
-
+  }
 }
 }
 </script>

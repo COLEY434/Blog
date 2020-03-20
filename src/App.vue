@@ -8,21 +8,17 @@
 
 <script>
 import Header from "./components/Header";
-import axios from 'axios';
 export default {
   components: {
     appNav: Header
   },
   created(){
+ 
     this.$store.dispatch('tryAutoLogin');
     this.$store.dispatch('getAllLikes');
     this.$store.dispatch('getAllPost');
   },
  
-  mounted(){
-    axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.$store.state.token;
-   
-  }
 
 }
 

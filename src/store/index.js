@@ -225,6 +225,9 @@ export default new Vuex.Store({
     },
     getUsername(state){
       return state.username;
+    },
+    getUserData(state){
+      return state.userData
     }
   }
 })

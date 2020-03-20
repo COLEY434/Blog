@@ -6,11 +6,12 @@ import Dashboard from '../components/Dashboard/Dashboard.vue'
 import Posts from '../components/Posts'
 import Post from '../components/Post'
 import PostReplies from '../components/PostReplies'
-import ChangePassword from '../components/Dashboard/Password'
+import ChangePassword from '../components/Profile/ChangePassword'
 import Profile from '../components/Dashboard/Profile'
 import EditProfile from '../components/Dashboard/EditProfile'
 import NotFoundComponent from '../components/NotFoundComponent'
 import NewProfileComponent from '../components/Profile/Profile'
+import ProfileEdit from '../components/Profile/ProfileEdit'
 
 
 
@@ -38,7 +39,16 @@ const routes = [
   {
     path: '/profile/:id',
     name: 'profile',
-    component: NewProfileComponent
+    component: NewProfileComponent,
+    beforeEnter: (to, from, next) => {
+      const token = localStorage.getItem("token")
+      if(token != null){
+          next();      
+      }
+      else{
+        next('/login');
+      }
+    }
   },
   {
     path: '/posts',
@@ -85,6 +95,34 @@ const routes = [
     
       }
     ],
+    beforeEnter: (to, from, next) => {
+      const token = localStorage.getItem("token")
+      if(token != null){
+          next();      
+      }
+      else{
+        next('/login');
+      }
+    }
+  },
+  {
+    path: '/profile/:id/edit',
+    name: 'profileEdit',
+    component: ProfileEdit,
+    beforeEnter: (to, from, next) => {
+      const token = localStorage.getItem("token")
+      if(token != null){
+          next();      
+      }
+      else{
+        next('/login');
+      }
+    }
+  },
+  {
+    path: '/change-password/edit',
+    name: 'ChangePassword',
+    component: ChangePassword,
     beforeEnter: (to, from, next) => {
       const token = localStorage.getItem("token")
       if(token != null){
