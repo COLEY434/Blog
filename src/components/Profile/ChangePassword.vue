@@ -54,8 +54,8 @@ methods: {
         }
         
         const PasswordInfo = {
-            OldPassword: Number(this.OldPassword),
-            NewPassword: Number(this.NewPassword)
+            OldPassword: this.OldPassword,
+            NewPassword: this.NewPassword
         }
         
         axiosInstance.put(`/user/change-profile/${Number(userId)}`, PasswordInfo)

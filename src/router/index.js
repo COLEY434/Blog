@@ -2,13 +2,10 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Login from '../components/Login.vue'
 import Register from '../components/Register.vue'
-import Dashboard from '../components/Dashboard/Dashboard.vue'
 import Posts from '../components/Posts'
 import Post from '../components/Post'
 import PostReplies from '../components/PostReplies'
 import ChangePassword from '../components/Profile/ChangePassword'
-import Profile from '../components/Dashboard/Profile'
-import EditProfile from '../components/Dashboard/EditProfile'
 import NotFoundComponent from '../components/NotFoundComponent'
 import NewProfileComponent from '../components/Profile/Profile'
 import ProfileEdit from '../components/Profile/ProfileEdit'
@@ -69,36 +66,6 @@ const routes = [
       const token = localStorage.getItem("token")
       if(token != null){
           next();
-      }
-      else{
-        next('/login');
-      }
-    }
-  },
-  {
-    path: '/dashboard',
-    component: Dashboard,
-    children: [
-      {
-        path: 'change-password',
-        component: ChangePassword
-    
-      },
-      {
-        path: 'profile',
-        component: Profile
-    
-      },
-      {
-        path: 'Edit-Profile',
-        component: EditProfile
-    
-      }
-    ],
-    beforeEnter: (to, from, next) => {
-      const token = localStorage.getItem("token")
-      if(token != null){
-          next();      
       }
       else{
         next('/login');

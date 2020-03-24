@@ -10,12 +10,7 @@
         <ul class="navbar-nav mr-5">
           <li class="nav-item" @click="collapseNavBar">
             <router-link to="/posts" v-if="auth" class="nav-link">Feed</router-link> 
-          </li>
-      
-          <li class="nav-item" @click="collapseNavBar">
-            <router-link to="/dashboard" v-if="auth" class="nav-link">Dashboard</router-link> 
-          </li>
-          
+          </li>         
           <li class="nav-item" v-if="auth">
             <span v-if="username" class="nav-link"> Welcome {{username}}</span>
             <span v-else class="nav-link">Welcome Anonymous </span>
