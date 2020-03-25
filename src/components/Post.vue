@@ -2,7 +2,7 @@
   <div  class="col-md-7 offset-md-2">
     <div v-for="(post, index) in blogPosts" :key="index" class="row card mb-2">
         <!-- contains the usernamwe, date posted, and updated plus user icon -->
-        <div class="col-md-12 " style="margin: 0px; background-color: #0B615E; border-bottom: 1px solid #0B615E">
+        <div class="col-md-12 " style="margin: 0px; background-color: #0B615e; border-bottom: 1px solid #0B615E">
             <div style="float: left" class="pl-2 pt-2">
                 <img :src="post.img_url" v-if="post.img_url" style="cursor: pointer; border-radius: 50%" @click="loadUserProfile(post.userId)" class="img-fluid" id="poster-icon" alt="">
                 <img src="../assets/images/download.png" v-if="!post.img_url" style="cursor: pointer; border-radius: 50%" @click="loadUserProfile(post.userId)" class="img-fluid" id="poster-icon" alt="">
@@ -169,7 +169,7 @@ methods: {
                 .then((response) => {
                     const data = response.data;
                     if(data.success){
-                        this.$store.dispatch('getComments', data.comments);
+                        this.$store.dispatch('SetComments', data.comments);
                         this.$router.push('posts/' + PostId + "/" + postUsername + '/comments');
                     }
                     
@@ -179,11 +179,6 @@ methods: {
     }
 }
 </script>
-
-
-
-
-
 
 
 <style>

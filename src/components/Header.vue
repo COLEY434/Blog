@@ -1,7 +1,7 @@
 <template>
   <div class="container-fluid" style="padding: 0px;">
     <nav class="navbar navbar-expand-lg">
-      <a class="navbar-brand" href="#">Safari Blog</a>
+      <a class="navbar-brand" href="/posts">Safari Blog</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span style="color: white" class="navbar-toggler-icon" ></span>
       </button>
@@ -21,7 +21,7 @@
           <li class="nav-item" @click="collapseNavBar">
             <router-link to="/change-password/edit" v-if="auth" class="nav-link">Change Password</router-link> 
           </li>
-           <li class="nav-item">
+           <li class="nav-item" @click="collapseNavBar">
              <span class="nav-link" v-if="auth" style="cursor: pointer" @click="Logout()">Logout</span>
            </li>
            <li class="nav-item" @click="collapseNavBar">

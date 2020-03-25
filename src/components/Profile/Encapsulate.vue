@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="col">
       <component :userId="user_Id" :is="SelectedComponent"></component>
   </div>
 </template>

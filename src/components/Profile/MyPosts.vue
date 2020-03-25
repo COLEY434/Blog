@@ -1,14 +1,13 @@
 <template>
 <div>
-  <h1 style="color: white">My Posts!!!</h1>
-  <div class="row" v-for="(post, index) in posts" :key="index" style="border-bottom: 1px solid white; margin-bottom: 7px">
-    <div class="col-md-12 col-sm-12" style="border: 1px solid white; padding-left: 0px">
-      <div>
+  <div class="row" v-for="(post, index) in posts" :key="index" style="border: 1px solid white; margin-bottom: 7px; border-radius: 5px">
+    <div class="col-md-12" style="padding-left: 0px; padding-right: 0px">
+      <div style="border-bottom: 1px solid white;">
         <span style="float: right; cursor: pointer" v-if="user_Id === Number($store.state.userId)" @click="RemovePost(post.id)" class="color">Delete</span>
         <span class="color"><small><b>Dated Posted:</b> {{ post.created_at }}</small></span><br>
         <span class="color"><small><b>Dated Updated:</b> {{ post.updated_at }}</small></span>
       </div>
-        <p class="color">{{ post.message}}</p>
+        <p class="color" style="padding: 5px">{{ post.message}}</p>
     </div>
 </div>
 </div>

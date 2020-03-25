@@ -68,7 +68,7 @@ export default new Vuex.Store({
     ProfileData({commit}, userData){
       commit('setProfileData', userData)
     },
-    getComments({commit, dispatch, state}, commentData){
+    SetComments({commit, dispatch, state}, commentData){
       
           const comments = []
           for(let comment in commentData){

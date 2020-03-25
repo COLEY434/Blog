@@ -1,9 +1,8 @@
 <template>
 <div>
-  <h1 style="color: white">My Followers!!!</h1>
   <Followers v-if="getUsers" :Users="getUsers"></Followers>
   <div v-else>
-    No Followers
+    <h2 style="color: white">No Followers</h2>
   </div>
 </div>
 </template>

@@ -1,6 +1,7 @@
 <template>
-  <div class="row">
-    <div class="col-md-5 offset-md-3" style="background-color: rgb(45, 92, 86); margin-top: 40px; padding:5px; border-radius: 7px;">
+  <div class="container">
+      <div class="row">
+          <div class="col-md-5 offset-md-3" style="background-color: rgb(45, 92, 86); margin-top: 40px; padding:5px; border-radius: 7px;">
             <form @submit.prevent="UpdatePassword(userId)">
                 <small v-if="error" style="color: red" id="errorMessage">{{ errorMessage }}</small>
                 <small v-if="success" style="color: green" id="errorMessage">{{ successMessage }}</small>
@@ -19,6 +20,8 @@
                 <button type="submit" class="btn btn-primary float-right">Update Password</button>
             </form> 
     </div>
+      </div>
+    
     </div>
 </template>
 

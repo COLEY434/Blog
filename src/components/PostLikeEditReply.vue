@@ -1,5 +1,5 @@
 <template>
-  <div style="border-top: 1px solid #0B615E">
+  <div style="border-top: 1px solid #0B615E;">
       <!-- Contains the edit, like and reply button etc -->
         <div>
             <span class="bkc ml-5" @click="$emit('loadPostReplies', postId, username)">Replies</span>

@@ -6,7 +6,8 @@
       <div v-for="(post, index) in comments" :key="index" class="row card mb-3">
         <div class="col-md-12" style="background-color: #0B615E">
           <div style="float: left" class="pl-2 pt-2">
-              <img src="../assets/images/download.png" id="poster-icon" alt="">
+              <img v-if="post.img_url" :src="post.img_url" id="poster-icon" alt="">
+              <img v-else src="../assets/images/download.png" id="poster-icon" alt="">
           </div>
           <div class="mt-2" style="">
                   <span style="float: right; margin-right: 15px;" v-if="Number(post.userId) === Number($store.state.userId)"><i style="cursor: pointer" data-toggle="modal" data-target="#DeletePost" @click="setPostIdToDelete(post.id)" class="text-danger fas fa-trash-alt"></i></span>

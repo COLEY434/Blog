@@ -1,23 +1,24 @@
 <template>
-  <div class="container">
-      <div class="col-md-7 offset-md-2" style="border: 2px solid white">
+  <div class="container-fluid"> 
+      <div class="col-md-7 offset-md-3" style="border: 2px solid white">
         <center>
         <h3 class="color">Profile</h3> 
-         <div style="border: 2px solid white; position: relative">
+         <div style="border: 1px solid white; position: relative;">
             <img v-if="!userInfo.img_url" src="../../assets/images/wolve.jpg" class="img-fluid" style="border-radius: 50%" alt="">
             <img v-if="userInfo.img_url" :src="userInfo.img_url" class="img-fluid" style="border-radius: 50%; max-height: 200px" alt="">
             <span v-if="userId === Number($store.state.userId)" @click="LoadEditProfile" id="profile-edit-button">Edit-profile</span>
-            <span v-if="userId !== Number($store.state.userId)" @click="Follow(userId, Number($store.state.userId))" id="follow-button">{{ isFollowing ? "Following" : "Follow"}}</span>
+            <span v-if="userId !== Number($store.state.userId)" :style="{backgroundColor: isFollowing ? '#00acee' : 'none', border: isFollowing ? '1px solid #00acee' : 'none',}" @click="Follow(userId, Number($store.state.userId))" id="follow-button">{{ isFollowing ? "Following" : "Follow"}}</span>
             
             <br>
-            <span class="color">Name: {{userInfo.surname + ' ' + userInfo.firstname }} </span><br>
-            <span class="color">Joined: {{ userInfo.date_joined }}</span><br>
-            <span class="color">Email: {{ userInfo.email }}</span><br>
-            <span class="color">Country: {{ userInfo.country }}</span><br>
+            <span class="color"><b>Name:</b> {{userInfo.surname + ' ' + userInfo.firstname }} </span><br>
+            <span class="color"><b>Joined:</b> {{ userInfo.date_joined }}</span><br>
+            <span class="color"><b>Email:</b> {{ userInfo.email }}</span><br>
+            <span class="color"><b>Country:</b> {{ userInfo.country }}</span><br>
+
              <br>
          </div>
-         </center>
-         <div style="border: 2px solid white; margin-left: 1px; margin-right: 1px" class="row">
+         </center><br>
+         <div style="border: 1px solid white; margin-left: 1px; margin-right: 1px" class="row">
            <div class="col column-style" style="border-bottom: 2px solid red" id="Posts" @click="SelectComponent('Posts')">
               Posts
             </div>
@@ -81,6 +82,7 @@ methods : {
       .then((response) => {
           const data = response.data
           this.userInfo = data
+          console.log(this.userInfo)
           this.$store.dispatch('ProfileData', data)
       })
       .catch((err) => console.log(err))
@@ -136,8 +138,8 @@ methods : {
 }
 #follow-button {
   position: absolute; 
-  right: 5px; 
-  top: 30px;
+  right: 1px; 
+  top: 1px;
   color: white;
   cursor: pointer; 
   padding:5px 10px 5px 10px;
@@ -152,5 +154,17 @@ methods : {
   border-radius: 5px;
   padding: 5px 10px 5px 10px;
   cursor: pointer;
+}
+@media (max-width: 440px) {
+  #follow-button  {
+    position: absolute; 
+    right: 0px; 
+    top: 0px;
+    color: white;
+    cursor: pointer; 
+    padding:5px 10px 5px 10px;
+    border: 1px solid blue;
+    border-radius: 5px;
+  }
 }
 </style>
