@@ -1,15 +1,29 @@
 <template>
 <div>
-  <div class="row" v-for="(post, index) in posts" :key="index" style="border: 1px solid white; margin-bottom: 7px; border-radius: 5px">
-    <div class="col-md-12" style="padding-left: 0px; padding-right: 0px">
-      <div style="border-bottom: 1px solid white;">
-        <span style="float: right; cursor: pointer" v-if="user_Id === Number($store.state.userId)" @click="RemovePost(post.id)" class="color">Delete</span>
-        <span class="color"><small><b>Dated Posted:</b> {{ post.created_at }}</small></span><br>
-        <span class="color"><small><b>Dated Updated:</b> {{ post.updated_at }}</small></span>
-      </div>
-        <p class="color" style="padding: 5px">{{ post.message}}</p>
+  <center  v-if="loading">
+    <div class="spinner-border" style="width: 7rem; height: 7rem; color: white;" role="status">
+      <span class="sr-only">Loading...</span>
     </div>
-</div>
+  </center>
+    
+
+  <div v-else>
+     <div v-if="success">
+      <div  class="row" v-for="(post, index) in posts" :key="index" style="border: 1px solid white; margin-bottom: 7px; border-radius: 5px">
+        <div class="col-md-12" style="padding-left: 0px; padding-right: 0px">
+          <div style="border-bottom: 1px solid white;">
+            <span style="float: right; cursor: pointer" v-if="user_Id === Number($store.state.userId)" @click="RemovePost(post.id)" class="color">Delete</span>
+            <span class="color"><small><b>Dated Posted:</b> {{ post.created_at }}</small></span><br>
+            <span class="color"><small><b>Dated Updated:</b> {{ post.updated_at }}</small></span>
+          </div>
+            <p class="color" style="padding: 5px">{{ post.message}}</p>
+        </div>
+      </div>
+    </div>
+    <div v-else>
+      <h2 style="color: white">{{ message }}</h2>
+    </div>
+  </div>
 </div>
 </template>
 
@@ -28,7 +42,10 @@ watch: {
 data(){
   return {
     posts: [],
-    user_Id: this.userId
+    user_Id: this.userId,
+    success: false,
+    message: "",
+    loading: true
   }
 },
 created(){
@@ -38,8 +55,18 @@ methods: {
   GetUserPost(userId){
     axiosInstance.get('/post/user/' + userId)
       .then((response) => {
-          const data = response.data
-          this.posts = data
+          const { success, message, posts } = response.data
+          if(success){
+            this.success = true
+            this.posts = posts
+            this.loading = false
+          }
+          if(!success){
+            this.success = false
+            this.message = message
+            this.loading = false
+          }
+
       })
         .catch((err) => console.log(err))
   },

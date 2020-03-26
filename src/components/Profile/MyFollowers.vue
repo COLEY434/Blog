@@ -1,9 +1,17 @@
 <template>
 <div>
-  <Followers v-if="getUsers" :Users="getUsers"></Followers>
+  <center v-if="loading">
+     <div class="spinner-border" style="width: 7rem; height: 7rem; color: white" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+  </center>
   <div v-else>
-    <h2 style="color: white">No Followers</h2>
+    <Followers v-if="success" :Users="getUsers"></Followers>
+    <div v-else>
+      <h2 style="color: white">{{ message }}</h2>
+    </div>
   </div>
+  
 </div>
 </template>
 
@@ -14,7 +22,9 @@ export default {
   data(){
     return {
     users: [],
-    message: ""
+    message: "",
+    success: false,
+    loading: true
     }
   },
  watch : {
@@ -47,10 +57,14 @@ methods: {
     .then((response) => {
         const {success, message, followers} = response.data
         if(success){
+          this.loading = false
+          this.success = true
           this.users = followers
-          this.message = message
+          
         }
         if(!success){
+          this.loading = false
+          this.false = false
           this.message = message
         }      
     })

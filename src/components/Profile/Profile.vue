@@ -1,13 +1,16 @@
 <template>
   <div class="container-fluid"> 
-      <div class="col-md-7 offset-md-3" style="border: 2px solid white">
+      <div class="col-md-6 offset-md-3" style="border: 2px solid white">
         <center>
         <h3 class="color">Profile</h3> 
-         <div style="border: 1px solid white; position: relative;">
+        <div v-if="loading" class="spinner-border" style="width: 7rem; height: 7rem; color: white" role="status">
+           <span class="sr-only">Loading...</span>
+        </div>
+         <div v-else style="border: 1px solid white; position: relative;">
             <img v-if="!userInfo.img_url" src="../../assets/images/wolve.jpg" class="img-fluid" style="border-radius: 50%" alt="">
             <img v-if="userInfo.img_url" :src="userInfo.img_url" class="img-fluid" style="border-radius: 50%; max-height: 200px" alt="">
             <span v-if="userId === Number($store.state.userId)" @click="LoadEditProfile" id="profile-edit-button">Edit-profile</span>
-            <span v-if="userId !== Number($store.state.userId)" :style="{backgroundColor: isFollowing ? '#00acee' : 'none', border: isFollowing ? '1px solid #00acee' : 'none',}" @click="Follow(userId, Number($store.state.userId))" id="follow-button">{{ isFollowing ? "Following" : "Follow"}}</span>
+            <span v-if="userId !== Number($store.state.userId)" :style="{backgroundColor: isFollowing ? '#00acee': '', border: isFollowing ? '1px solid #00acee' : ''}" @click="Follow(userId, Number($store.state.userId))" id="follow-button">{{ isFollowing ? "Following" : "Follow"}}</span>
             
             <br>
             <span class="color"><b>Name:</b> {{userInfo.surname + ' ' + userInfo.firstname }} </span><br>
@@ -51,17 +54,20 @@ data(){
     SelectedComponent: 'Posts',
     userId: Number(this.$route.params.id),
     userInfo: {},
-    isFollowing: false
+    isFollowing: false,
+    loading: false
   }
 },
 watch: {
   $route(newRouteData){
+    this.loading = true
     this.userId = Number(newRouteData.params.id)
     this.GetUser(this.userId)
     this.GetFollowingStatus(this.userId, Number(this.$store.state.userId))
   }
 },
 created(){
+this.loading = true
 this.GetUser(this.userId)
 this.GetFollowingStatus(this.userId, Number(this.$store.state.userId))
 },
@@ -82,7 +88,7 @@ methods : {
       .then((response) => {
           const data = response.data
           this.userInfo = data
-          console.log(this.userInfo)
+          this.loading = false
           this.$store.dispatch('ProfileData', data)
       })
       .catch((err) => console.log(err))

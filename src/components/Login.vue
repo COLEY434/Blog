@@ -5,20 +5,24 @@
               <div id="da">
               <form @submit.prevent="Login">
                   <br>
-                  <center><span v-if="loginError" class="text-danger">{{loginErrorMessage}}</span></center>
+                  <center><span v-if="loginError" class="text-danger"><b>{{loginErrorMessage}}</b></span></center>
                 <div class="form-group">
                     <label for="Email">Email address</label>
                     <input type="email" v-model="user.email" class="form-control" id="Email" aria-describedby="emailHelp" placeholder="Enter email">
-                    <small id="emailHelp" v-if="emailHasError" class="form-text text-danger">{{emailError}}</small>
+                    <small id="emailHelp" v-if="emailHasError" class="form-text text-danger"><b>{{emailError}}</b></small>
                 </div>
  
                 <div class="form-group">
                     <label for="Password">Password</label>
                     <input type="password" v-model="user.password" class="form-control" id="InputPassword" placeholder="Password">
-                    <small id="emailHelp" v-if="passwordHasError" class="form-text text-danger">{{passwordError}}</small>
+                    <small id="emailHelp" v-if="passwordHasError" class="form-text text-danger"><b>{{passwordError}}</b></small>
                 </div>
                 
-                <button type="submit" class="btn btn-success">Login</button>
+                <button v-if="!loading" type="submit" class="btn btn-success">Login</button>
+                <button v-else class="btn btn-success" type="button" disabled>
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    Logging in...
+                </button>
                 <br><br>
                </form>
               </div>
@@ -42,7 +46,8 @@ export default {
             passwordError: null,
             passwordHasError: false,
             loginError: false,
-            loginErrorMessage: false
+            loginErrorMessage: false,
+            loading: false
         }
     },
     methods: {
@@ -71,7 +76,7 @@ export default {
 
             
             if(this.user.email !== '' && this.user.password !== ''){
-
+                this.loading = true
                 axiosInstance.post('/authenticate/login', this.user)
                 .then((response) => {
                      const result = response.data;
@@ -93,13 +98,15 @@ export default {
                         localStorage.setItem('expiresIn', expirationDate);
                         localStorage.setItem('Id', result.userId);
                         localStorage.setItem('username', result.username);
-                    
+                    this.loading = false
                     this.$router.push('/posts');
                     }
 
                     if(!result.success)
                      {
-                        this.user = {};
+                        this.loading = false
+                        this.user.email = '';
+                        this.user.password = ''
                         this.loginError= true;
                         this.loginErrorMessage = result.errorMessage;          
                      }

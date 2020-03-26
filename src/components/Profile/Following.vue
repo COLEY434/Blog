@@ -1,9 +1,16 @@
 <template>
 <div>
-  <h1 style="color: white">Following</h1>
-  <Following v-if="getUsers" :Users="getUsers"></Following>
+  <center v-if="loading">
+     <div class="spinner-border" style="width: 7rem; height: 7rem; color: white" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+  </center>
+
   <div v-else>
-    No followings
+    <Following v-if="success" :Users="getUsers"></Following>
+    <div v-else>
+      <h2 style="color: white">{{ message }}</h2>
+    </div>
   </div>
 </div>
   
@@ -20,7 +27,9 @@ export default {
 data(){
     return {
     users: [],
-    message: ""
+    message: "",
+    success: false,
+    loading: true
     }
   },
  watch : {
@@ -48,11 +57,16 @@ methods: {
     axiosInstance.get(`/follow/get-followings/${userId}`)
     .then((response) => {
         const {success, message, followings} = response.data
+        
         if(success){
+          this.loading = false
+          this.success = true
           this.users = followings
-          this.message = message
+          
         }
         if(!success){
+          this.loading = false
+          this.success = false
           this.message = message
         }      
     })
