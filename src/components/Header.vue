@@ -1,7 +1,7 @@
 <template>
   <div class="container-fluid" style="padding: 0px;">
     <nav class="navbar navbar-expand-lg">
-      <a class="navbar-brand" href="/posts">Safari Blog</a>
+      <a class="navbar-brand" style="cursor: pointer" @click="home()">Safari Blog</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span style="color: white" class="navbar-toggler-icon" ></span>
       </button>
@@ -22,7 +22,7 @@
             <router-link to="/change-password/edit" v-if="auth" class="nav-link">Change Password</router-link> 
           </li>
            <li class="nav-item" @click="collapseNavBar">
-             <span class="nav-link" v-if="auth" style="cursor: pointer" @click="Logout()">Logout</span>
+             <span class="nav-link" v-if="auth" style="cursor: pointer" @click="Logout()"><a href="/login">Logout</a></span>
            </li>
            <li class="nav-item" @click="collapseNavBar">
            <router-link v-if="!auth" to="/login" class="nav-link">Sign In</router-link> 
@@ -55,6 +55,7 @@ watch: {
         this.profile = `/profile/${newUserId}`;
     }
 },
+
 computed: {
   auth(){
     return this.$store.getters.isAuthenticated;
@@ -74,6 +75,9 @@ methods: {
   collapseNavBar(){
         $('.collapse').collapse('hide');
     },  
+  home(){
+    this.$router.push("/posts")
+  }
 }
 }
 </script>

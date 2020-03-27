@@ -3,8 +3,10 @@
       <div class="row">
           <div class="col-md-5 offset-md-3" style="background-color: rgb(45, 92, 86); margin-top: 40px; padding:5px; border-radius: 7px;">
             <form @submit.prevent="UpdatePassword(userId)">
-                <small v-if="error" style="color: red" id="errorMessage">{{ errorMessage }}</small>
-                <small v-if="success" style="color: green" id="errorMessage">{{ successMessage }}</small>
+                <center>
+                <small v-if="error" style="color: red; background-color: white; padding: 5px; border-radius: 5px" id="errorMessage"><b>{{ errorMessage }}</b></small>
+                <small v-if="success" style="color: green; background-color: white; padding: 5px; border-radius: 5px" id="errorMessage"><b>{{ successMessage }}</b></small>
+                </center>
                 <div class="form-group">
                     <label for="oldPassword" id="label-text">Old Password</label>
                     <input type="password" v-model="OldPassword" class="form-control" id="oldPassword" placeholder="Old Password">
@@ -17,7 +19,11 @@
                     <label for="confirmPassword" id="label-text">Confirm Password</label>
                     <input type="password" v-model="ConfirmPassword" class="form-control" id="confirmPassword" placeholder="Confirm Password">
                 </div>
-                <button type="submit" class="btn btn-primary float-right">Update Password</button>
+                <button v-if="!loading" type="submit" class="btn btn-primary float-right">Update Password</button>
+                 <button v-else class="btn btn-success float-right" type="button" disabled>
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    Updating...
+                </button>
             </form> 
     </div>
       </div>
@@ -40,7 +46,8 @@ data(){
         successMessage: '',
         success: false,
         error: false,
-        userId: null
+        userId: null,
+        loading: false
     }
 },
 methods: {
@@ -60,12 +67,13 @@ methods: {
             OldPassword: this.OldPassword,
             NewPassword: this.NewPassword
         }
-        
-        axiosInstance.put(`/user/change-profile/${Number(userId)}`, PasswordInfo)
+        this.loading = true
+        axiosInstance.put(`/user/change-password/${Number(userId)}`, PasswordInfo)
                 .then((response) => {
                     const { success } = response.data
                     if(success){
-                        this.error = true,
+                        this.loading = false
+                        this.error = false,
                         this.errorMessage = null
                         this.success = true,
                         this.successMessage = "Password Changed successfully"
@@ -76,6 +84,7 @@ methods: {
                         }, 5000)
                     }
                     if(!success){
+                        this.loading = false
                         this.error = true,
                         this.errorMessage = "current password does not match old password"
                         this.ConfirmPassword = this.NewPassword = this.OldPassword = ''

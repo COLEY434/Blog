@@ -8,7 +8,7 @@
         </div>
          <div v-else style="border: 1px solid white; position: relative;">
             <img v-if="!userInfo.img_url" src="../../assets/images/wolve.jpg" class="img-fluid" style="border-radius: 50%" alt="">
-            <img v-if="userInfo.img_url" :src="userInfo.img_url" class="img-fluid" style="border-radius: 50%; max-height: 200px" alt="">
+            <img v-if="userInfo.img_url" :src="userInfo.img_url" class="img-fluid" style="border-radius: 50%; max-height: 200px; max-width: 200px" alt="">
             <span v-if="userId === Number($store.state.userId)" @click="LoadEditProfile" id="profile-edit-button">Edit-profile</span>
             <span v-if="userId !== Number($store.state.userId)" :style="{backgroundColor: isFollowing ? '#00acee': '', border: isFollowing ? '1px solid #00acee' : ''}" @click="Follow(userId, Number($store.state.userId))" id="follow-button">{{ isFollowing ? "Following" : "Follow"}}</span>
             

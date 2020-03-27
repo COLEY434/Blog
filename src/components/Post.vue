@@ -2,10 +2,11 @@
   <div  class="col-md-7 offset-md-2">
     <div v-for="(post, index) in blogPosts" :key="index" class="row card mb-2">
         <!-- contains the usernamwe, date posted, and updated plus user icon -->
-        <div class="col-md-12 " style="margin: 0px; background-color: #0B615e; border-bottom: 1px solid #0B615E">
+           
+        <div class="col-md-12" style="margin: 0px; background-color: #0B615e; border-bottom: 1px solid #0B615E">
             <div style="float: left" class="pl-2 pt-2">
-                <img :src="post.img_url" v-if="post.img_url" style="cursor: pointer; border-radius: 50%" @click="loadUserProfile(post.userId)" class="img-fluid" id="poster-icon" alt="">
-                <img src="../assets/images/download.png" v-if="!post.img_url" style="cursor: pointer; border-radius: 50%" @click="loadUserProfile(post.userId)" class="img-fluid" id="poster-icon" alt="">
+                <img :src="post.img_url" v-if="post.img_url" @click="loadUserProfile(post.userId)" style="cursor: pointer; border-radius: 50%" class="img-fluid" id="poster-icon" alt="">
+                <img src="../assets/images/download.png"  @click="loadUserProfile(post.userId)" v-if="!post.img_url" style="cursor: pointer; border-radius: 50%" class="img-fluid" id="poster-icon" alt="">
             </div>
              
              <div class="mt-2" style="">
@@ -20,12 +21,12 @@
 
 
         <!-- contains the post message -->
-        <div class="pl-2 pr-2 pt-2">
+        <div class="pl-2 pr-2 pt-2" style="cursor: pointer" @click="loadUserProfile(post.userId)">
             <p style="white-space: pre-line; font-size: 14px">
                 {{ post.message }}
             </p>
         </div>
-                   
+            
              <PostLikeEditReply :likes="likes" :storeUserId="Number($store.state.userId)" v-on:loadPostReplies="loadPostReplies" v-on:setReplyInfo="setReplyInfo" v-on:setEditInfo="setEditInfo" :postId="post.id" :username="post.username" :userId="post.userId" :postMessage="post.message"/>    
     </div>
 <!-- Component for editing posts-->
@@ -93,8 +94,7 @@ export default {
             success: false,
             successMessage: null,
             blogPosts: this.posts,
-            likes: this.$store.state.likes 
-
+            likes: this.$store.state.likes
         }
     },
  computed: { 
@@ -106,7 +106,7 @@ export default {
         posts(newBlogPost){
             this.blogPosts = newBlogPost
         },
-        getLikes(newLikes){
+         getLikes(newLikes){
             this.likes = newLikes
         }
     },

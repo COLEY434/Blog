@@ -88,16 +88,13 @@ export default new Vuex.Store({
           }
         commit('setComments', comments);
     },
-    sendPost(context,userData){
-      // console.log(state.token);
-      // if(!state.token){
-      //   return;
-      // }
+    sendPost(context,userData){    
       axiosInstance.post('/post/create', userData)
           .then((response) => {
             const data = response.data;
             if(data.success){
-              context.dispatch('getAllPost');
+              context.dispatch('getAllLikes');
+              context.dispatch('getAllPost');          
             }
             
           })
@@ -179,7 +176,7 @@ export default new Vuex.Store({
       localStorage.removeItem('Id');
       localStorage.removeItem('expiresIn');
       localStorage.removeItem('username');
-      router.replace('/login')
+     // router.replace('/login')
 
     },
     tryAutoLogin({commit}){

@@ -10,17 +10,16 @@
               <img v-else src="../assets/images/download.png" id="poster-icon" alt="">
           </div>
           <div class="mt-2" style="">
-                  <span style="float: right; margin-right: 15px;" v-if="Number(post.userId) === Number($store.state.userId)"><i style="cursor: pointer" data-toggle="modal" data-target="#DeletePost" @click="setPostIdToDelete(post.id)" class="text-danger fas fa-trash-alt"></i></span>
-                  <span class="pl-2" v-if="post.username"><small>{{ post.username }}</small></span>
-                  <span class="pl-2" v-if="!post.username"><small>Anonymous</small></span><br>
-                  <span class="pl-2 card-text"><small class="text-muted">Posted: {{ post.date_posted }}</small></span><br>
-                  <span class="pl-2" v-if="post.date_updated"><small class="text-muted">Updated: {{ post.date_updated }}</small></span>
+                 <span class="pl-2 color" v-if="post.username"><small>{{ post.username }}</small></span>
+                  <span class="pl-2 color" v-if="!post.username"><small>Anonymous</small></span><br>
+                  <span class="pl-2 color card-text"><small>Posted: {{ post.date_posted }}</small></span><br>
+                  <span class="pl-2 color" v-if="post.date_updated"><small >Updated: {{ post.date_updated }}</small></span>
                   
           </div>
         </div>
 
-        <div class="pl-2 pr-2 pt-2" style="background-color: black">
-            <p style="color: white; white-space: pre-line; font-size: 14px">
+        <div class="pl-2 pr-2 pt-2">
+            <p style="white-space: pre-line; font-size: 14px">
                 {{ post.message }}
             </p>
         </div>            
@@ -49,6 +48,8 @@ export default {
 }
 </script>
 
-<style>
-  
+<style scoped>
+  .color {
+      color: white;
+  }
 </style>

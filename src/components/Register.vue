@@ -25,7 +25,11 @@
                     <small id="emailHelp" v-if="confirmPasswordhasError" class="form-text text-info">{{confirmPasswordError}}.</small>
                 </div>
                     
-                <button type="submit" class="btn btn-success">Register</button>
+                <button v-if="!loading" type="submit" class="btn btn-success">Register</button>
+                 <button v-else class="btn btn-success" type="button" disabled>
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    Registering...
+                </button>
                 <br><br>
 
                </form>
@@ -53,7 +57,8 @@ data(){
         confirmPasswordError: '',
         emailhasError: false,
         passwordhasError: false,
-        confirmPasswordhasError: false
+        confirmPasswordhasError: false,
+        loading: false
     }
 },   
 methods: {
@@ -107,12 +112,13 @@ methods: {
         
 
 if(this.user.email !== '' || this.user.password !== ''){
-
+    this.loading = true
     axiosInstance.post('/authenticate/register', userDetails)
     .then((response) => {
          const result = response.data;
         if(result.success)
         {
+            this.loading = false
             this.$store.dispatch('authUser', {
                 token: result.token,
                 userId: result.userId,
@@ -134,6 +140,7 @@ if(this.user.email !== '' || this.user.password !== ''){
         }
         if(!result.success)
         {
+            this.loading = false
             this.user = {};
             this.failure = true;
             this.failureMessage = result.errorMessage;

@@ -14,7 +14,9 @@
              <p class="text-success" v-if="success">{{successMessage}}</p>
                   <textarea v-model="editMessage" style="width: 100%" id="message1" cols="73" rows="5">                     
                   </textarea>
-                  <button type="submit" :disabled="!editMessage || totalWordLength >=250" style="float: right" class="btn btn-primary" id="postButton1">Update</button>
+                  <button type="submit" :disabled="!editMessage || totalWordLength >=500" style="float: right" class="btn btn-primary" id="postButton1">Update</button>
+                   
+        
          </form>
       </div>
     </div>
