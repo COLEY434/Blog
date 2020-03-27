@@ -186,7 +186,7 @@ export default new Vuex.Store({
       const username = localStorage.getItem('username');
       const Now = new Date();
       const expirationTime = new Date(expirationDate);
-
+      
       if(!token){
        return;
       }
@@ -205,7 +205,7 @@ export default new Vuex.Store({
         userId: user_id,
         username: username
       })
-      
+      router.replace('/posts');
     }
    
   },
