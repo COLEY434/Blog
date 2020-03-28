@@ -22,7 +22,7 @@
             <router-link to="/change-password/edit" v-if="auth" class="nav-link">Change Password</router-link> 
           </li>
            <li class="nav-item" @click="collapseNavBar">
-             <span class="nav-link" v-if="auth" style="cursor: pointer" @click="Logout()"><a href="/login">Logout</a></span>
+             <span class="nav-link" v-if="auth" style="cursor: pointer" @click="Logout()">Logout</span>
            </li>
            <li class="nav-item" @click="collapseNavBar">
            <router-link v-if="!auth" to="/login" class="nav-link">Sign In</router-link> 
