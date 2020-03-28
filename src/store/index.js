@@ -176,7 +176,7 @@ export default new Vuex.Store({
       localStorage.removeItem('Id');
       localStorage.removeItem('expiresIn');
       localStorage.removeItem('username');
-     // router.replace('/login')
+      router.replace('/login')
 
     },
     tryAutoLogin({commit}){
